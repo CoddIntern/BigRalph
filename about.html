@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | BigRalph</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 200px;
+            z-index: 1;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex-shrink-0 flex items-center">
+                        <i data-feather="gift" class="h-8 w-8 text-blue-600"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">BigRalph</span>
+                    </a>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Categories</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Winners</a>
+                        <a href="about.html" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="dropdown relative">
+                        <button class="flex items-center space-x-2">
+                            <img class="h-8 w-8 rounded-full" src="http://static.photos/people/200x200/42" alt="Profile">
+                            <span class="font-medium">John D.</span>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">₦25,000</span>
+                        </button>
+                        <div class="dropdown-menu mt-2 py-2 bg-white rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="user" class="w-4 h-4 mr-2"></i> Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="credit-card" class="w-4 h-4 mr-2"></i> Wallet</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="award" class="w-4 h-4 mr-2"></i> My Wins</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="shield" class="w-4 h-4 mr-2"></i> KYC</a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="log-out" class="w-4 h-4 mr-2"></i> Sign out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero -->
+    <div class="bg-blue-600 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">About BigRalph</h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl">Affordable chance to own luxury items worth millions for a small ticket price.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-8">
+                <h2 class="text-2xl font-bold mb-6">Our Promise</h2>
+                <p class="text-gray-700 mb-6">
+                    At BigRalph, we offer an exciting opportunity to own high-value items like cars, electronics, and land 
+                    for just a fraction of their actual cost. Our transparent, capped-odds raffle system (max 1/3000) builds 
+                    trust compared to typical lottery opacity. We make the process fun and exciting while ensuring complete 
+                    fairness and transparency.
+                </p>
+                <p class="text-gray-700 mb-6">
+                    Every winner receives their prize with free delivery anywhere in Nigeria - no hidden costs whatsoever.
+                </p>
+
+                <!-- Values Section -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                    <!-- Transparency -->
+                    <div class="bg-blue-50 p-6 rounded-lg" data-aos="fade-up">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i data-feather="eye" class="text-blue-600 w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold ml-4">TRANSPARENCY</h3>
+                        </div>
+                        <p class="text-gray-700 mb-4">
+                            Every raffle is conducted with complete transparency, from ticket sales to winner selection. 
+                            We believe in open communication and fairness for all participants.
+                        </p>
+                        <a href="#" class="text-blue-600 font-medium inline-flex items-center">
+                            See Our Process <i data-feather="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- Security -->
+                    <div class="bg-green-50 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="100">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i data-feather="lock" class="text-green-600 w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold ml-4">SECURITY</h3>
+                        </div>
+                        <p class="text-gray-700 mb-4">
+                            We employ robust security measures to protect your personal information and transactions. 
+                            Your trust is paramount, and we're committed to safeguarding your data.
+                        </p>
+                        <a href="#" class="text-green-600 font-medium inline-flex items-center">
+                            Privacy Policy <i data-feather="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </a>
+                    </div>
+
+                    <!-- Fairness -->
+                    <div class="bg-purple-50 p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i data-feather="award" class="text-purple-600 w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold ml-4">FAIRNESS</h3>
+                        </div>
+                        <p class="text-gray-700 mb-4">
+                            Our raffle system ensures that every ticket has an equal chance of winning. 
+                            We use certified random selection methods to guarantee impartiality.
+                        </p>
+                        <a href="#" class="text-purple-600 font-medium inline-flex items-center">
+                            How Winners Are Chosen <i data-feather="arrow-right" class="w-4 h-4 ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- How It Works -->
+                <div class="mt-16">
+                    <h2 class="text-2xl font-bold mb-6">How It Works</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="border-l-4 border-blue-500 pl-4 py-2" data-aos="fade-up">
+                            <h3 class="text-lg font-semibold">1. Browse Raffles</h3>
+                            <p class="text-gray-600 mt-2">
+                                Explore our selection of amazing items available to win. Each raffle has a fixed number of tickets.
+                            </p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4 py-2" data-aos="fade-up" data-aos-delay="100">
+                            <h3 class="text-lg font-semibold">2. Purchase Tickets</h3>
+                            <p class="text-gray-600 mt-2">
+                                Buy tickets for the raffles you want to enter. Each ticket gives you one chance to win.
+                            </p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4 py-2" data-aos="fade-up" data-aos-delay="200">
+                            <h3 class="text-lg font-semibold">3. Wait for Draw</h3>
+                            <p class="text-gray-600 mt-2">
+                                When all tickets are sold or the deadline is reached, we randomly select a winner.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">BigRalph</h3>
+                    <p class="text-gray-400 text-sm">Your chance to win amazing prizes at affordable prices.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white text-sm">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Categories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Winners</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white text-sm">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-4">Subscribe to our newsletter</p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 bg-gray-700 text-white rounded-l-md text-sm w-full">
+                        <button class="bg-blue-600 text-white px-3 py-2 rounded-r-md text-sm"><i data-feather="send"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2023 BigRalph. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        AOS.init();
+        feather.replace();
+    </script>
+</body>
+</html>

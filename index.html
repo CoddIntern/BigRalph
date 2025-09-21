@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigRalph - Win Amazing Prizes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .category-active {
+            @apply bg-blue-600 text-white;
+        }
+        .raffle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            min-width: 200px;
+            z-index: 1;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e5e7eb;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .countdown-timer {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0 flex items-center">
+                        <i data-feather="gift" class="h-8 w-8 text-blue-600"></i>
+                        <span class="ml-2 text-xl font-bold text-gray-900">BigRalph</span>
+                    </a>
+                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                        <a href="#" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Categories</a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Winners</a>
+                        <a href="about.html" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About</a>
+                    </div>
+                </div>
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <div class="dropdown relative">
+                        <button class="flex items-center space-x-2">
+                            <img class="h-8 w-8 rounded-full" src="http://static.photos/people/200x200/42" alt="Profile">
+                            <span class="font-medium">John D.</span>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">₦25,000</span>
+                        </button>
+                        <div class="dropdown-menu mt-2 py-2 bg-white rounded-md shadow-lg">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="user" class="w-4 h-4 mr-2"></i> Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="credit-card" class="w-4 h-4 mr-2"></i> Wallet</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="award" class="w-4 h-4 mr-2"></i> My Wins</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="shield" class="w-4 h-4 mr-2"></i> KYC</a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="log-out" class="w-4 h-4 mr-2"></i> Sign out</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <i data-feather="menu"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-blue-600 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">Win Amazing Prizes</h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl">Get a chance to own luxury items for a fraction of their value!</p>
+                <div class="mt-8 flex justify-center">
+                    <div class="inline-flex rounded-md shadow">
+                        <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50">Explore Raffles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-wrap justify-center gap-2 mb-8">
+            <button class="category-active px-4 py-2 rounded-full text-sm font-medium transition-all">All</button>
+            <button class="bg-gray-100 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-all">Cars</button>
+            <button class="bg-gray-100 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-all">Electronics</button>
+            <button class="bg-gray-100 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-all">Gadgets</button>
+            <button class="bg-gray-100 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-all">Land</button>
+            <button class="bg-gray-100 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-all">Fashion</button>
+        </div>
+
+        <!-- Raffle Items Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Item 1 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="http://static.photos/automotive/640x360/1" alt="Car">
+                    <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Cars</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">2023 Toyota Camry</h3>
+                    <p class="text-gray-600 text-sm mt-1">Brand new luxury sedan with all features</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Ticket price:</span>
+                            <span class="font-bold">₦5,000</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Tickets sold:</span>
+                                <span class="tickets" data-sold="1234" data-total="3000">0/0</span>
+                            </div>
+                            <div class="progress-bar mt-1">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-sm">
+                                <div class="text-gray-500">Raffle ends in:</div>
+                                <div class="countdown-timer font-medium" data-end="2023-12-31T23:59:59"></div>
+                            </div>
+                            <a href="item.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="http://static.photos/technology/640x360/187" alt="iPhone">
+                    <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Gadgets</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">iPhone 15 Pro Max</h3>
+                    <p class="text-gray-600 text-sm mt-1">Latest Apple smartphone with 256GB storage</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Ticket price:</span>
+                            <span class="font-bold">₦2,500</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Tickets sold:</span>
+                                <span class="tickets" data-sold="876" data-total="1500">0/0</span>
+                            </div>
+                            <div class="progress-bar mt-1">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-sm">
+                                <div class="text-gray-500">Raffle ends in:</div>
+                                <div class="countdown-timer font-medium" data-end="2023-11-15T23:59:59"></div>
+                            </div>
+                            <a href="item.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="http://static.photos/technology/640x360/193" alt="AirPods">
+                    <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Gadgets</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">AirPods Pro 2</h3>
+                    <p class="text-gray-600 text-sm mt-1">Premium wireless earbuds with noise cancellation</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Ticket price:</span>
+                            <span class="font-bold">₦1,000</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Tickets sold:</span>
+                                <span class="tickets" data-sold="800" data-total="800">0/0</span>
+                            </div>
+                            <div class="progress-bar mt-1">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-sm">
+                                <div class="text-gray-500">Raffle ends in:</div>
+                                <div class="countdown-timer font-medium" data-end="2023-10-30T23:59:59"></div>
+                            </div>
+                            <a href="item.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="http://static.photos/estate/640x360/4" alt="Land">
+                    <div class="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Land</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">500sqm Plot in Lekki</h3>
+                    <p class="text-gray-600 text-sm mt-1">Prime residential land in highbrow area</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Ticket price:</span>
+                            <span class="font-bold">₦10,000</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Tickets sold:</span>
+                                <span class="tickets" data-sold="1876" data-total="3000">0/0</span>
+                            </div>
+                            <div class="progress-bar mt-1">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-sm">
+                                <div class="text-gray-500">Raffle ends in:</div>
+                                <div class="countdown-timer font-medium" data-end="2023-12-15T23:59:59"></div>
+                            </div>
+                            <a href="item.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="http://static.photos/technology/640x360/5" alt="Monitor">
+                    <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded">Electronics</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">32" 4K Gaming Monitor</h3>
+                    <p class="text-gray-600 text-sm mt-1">144Hz refresh rate, 1ms response time</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Ticket price:</span>
+                            <span class="font-bold">₦3,000</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Tickets sold:</span>
+                                <span class="tickets" data-sold="1500" data-total="1500">0/0</span>
+                            </div>
+                            <div class="progress-bar mt-1">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-sm">
+                                <div class="text-gray-500">Raffle ends in:</div>
+                                <div class="countdown-timer font-medium" data-end="2023-11-20T23:59:59"></div>
+                            </div>
+                            <a href="item.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" src="http://static.photos/automotive/640x360/6" alt="Bike">
+                    <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Cars</div>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">2023 Yamaha R1</h3>
+                    <p class="text-gray-600 text-sm mt-1">1000cc sports bike with racing features</p>
+                    <div class="mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Ticket price:</span>
+                            <span class="font-bold">₦7,500</span>
+                        </div>
+                        <div class="mt-2">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-gray-500">Tickets sold:</span>
+                                <span class="tickets" data-sold="1543" data-total="2500">0/0</span>
+                            </div>
+                            <div class="progress-bar mt-1">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="text-sm">
+                                <div class="text-gray-500">Raffle ends in:</div>
+                                <div class="countdown-timer font-medium" data-end="2023-12-10T23:59:59"></div>
+                            </div>
+                            <a href="item.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- Winners Section -->
+    <div class="bg-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-center mb-8">Recent Winners</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow text-center" data-aos="zoom-in">
+                    <img class="h-16 w-16 rounded-full mx-auto mb-4" src="http://static.photos/people/200x200/7" alt="Winner">
+                    <h3 class="text-lg font-medium">Adeola B.</h3>
+                    <p class="text-gray-600 text-sm">Won iPhone 14 Pro</p>
+                    <p class="text-blue-600 text-sm mt-2">₦2,500 ticket</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow text-center" data-aos="zoom-in" data-aos-delay="100">
+                    <img class="h-16 w-16 rounded-full mx-auto mb-4" src="http://static.photos/people/200x200/8" alt="Winner">
+                    <h3 class="text-lg font-medium">Emeka C.</h3>
+                    <p class="text-gray-600 text-sm">Won Toyota Corolla</p>
+                    <p class="text-blue-600 text-sm mt-2">₦5,000 ticket</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow text-center" data-aos="zoom-in" data-aos-delay="200">
+                    <img class="h-16 w-16 rounded-full mx-auto mb-4" src="http://static.photos/people/200x200/9" alt="Winner">
+                    <h3 class="text-lg font-medium">Fatima K.</h3>
+                    <p class="text-gray-600 text-sm">Won Plot in Abuja</p>
+                    <p class="text-blue-600 text-sm mt-2">₦10,000 ticket</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow text-center" data-aos="zoom-in" data-aos-delay="300">
+                    <img class="h-16 w-16 rounded-full mx-auto mb-4" src="http://static.photos/people/200x200/10" alt="Winner">
+                    <h3 class="text-lg font-medium">John O.</h3>
+                    <p class="text-gray-600 text-sm">Won AirPods Pro</p>
+                    <p class="text-blue-600 text-sm mt-2">₦1,000 ticket</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".tickets").forEach(ticketsEl => {
+            const sold = parseInt(ticketsEl.dataset.sold, 10);
+            const total = parseInt(ticketsEl.dataset.total, 10);
+            const percent = (sold / total) * 100;
+
+            ticketsEl.closest(".raffle-card")
+                .querySelector(".progress-fill").style.width = percent + "%";
+
+            ticketsEl.textContent = sold.toLocaleString() + "/" + total.toLocaleString();
+        });
+    });
+    </script>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">BigRalph</h3>
+                    <p class="text-gray-400 text-sm">Your chance to win amazing prizes at affordable prices.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Categories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Winners</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white text-sm">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-4">Subscribe to our newsletter</p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 bg-gray-700 text-white rounded-l-md text-sm w-full">
+                        <button class="bg-blue-600 text-white px-3 py-2 rounded-r-md text-sm"><i data-feather="send"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2023 BigRalph. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        AOS.init();
+        feather.replace();
+        
+        // Simple countdown timer
+        document.querySelectorAll('.countdown-timer').forEach(timer => {
+            const endDate = new Date(timer.getAttribute('data-end')).getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endDate - now;
+                
+                if (distance < 0) {
+                    timer.textContent = "Raffle ended";
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                
+                timer.textContent = `${days}d ${hours}h ${minutes}m`;
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
+        });
+        
+        // Category filter buttons
+        const categoryButtons = document.querySelectorAll('.flex-wrap button');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => btn.classList.remove('category-active', 'bg-blue-600', 'text-white'));
+                button.classList.add('category-active', 'bg-blue-600', 'text-white');
+            });
+        });
+    </script>
+</body>
+</html>
