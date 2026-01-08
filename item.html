@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,51 +11,9 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <style>
-        .carousel-slide {
-            transition: opacity 0.3s ease;
-        }
-        
-        .carousel-modal {
-            transition: opacity 0.3s ease;
-        }
-        
-        .carousel-modal-slide {
-            transition: opacity 0.3s ease;
-        }
-        
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            min-width: 200px;
-            z-index: 1;
-        }
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-        .progress-bar {
-            height: 8px;
-            border-radius: 4px;
-            background-color: #e5e7eb;
-        }
-        .progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            background-color: #3b82f6;
-            transition: width 0.3s ease;
-        }
-        .countdown-timer {
-            font-family: monospace;
-        }
-        .comment-box {
-            transition: all 0.3s ease;
-        }
-        .comment-box:hover {
-            transform: translateX(5px);
-        }
-    </style>
+    <link href="style.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-white shadow-sm">
@@ -66,31 +25,48 @@
                         <span class="ml-2 text-xl font-bold text-gray-900">BigRalph</span>
                     </a>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="index.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
-                        <a href="#" class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Categories</a>
-                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Winners</a>
-                        <a href="about.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About</a>
+                        <a href="index.html"
+                            class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="#"
+                            class="border-blue-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Categories</a>
+                        <a href="#"
+                            class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Winners</a>
+                        <a href="about.html"
+                            class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About</a>
                     </div>
                 </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                <div class="user-links hidden sm:ml-6 sm:flex sm:items-center">
                     <div class="dropdown relative">
                         <button class="flex items-center space-x-2">
-                            <img class="h-8 w-8 rounded-full" src="http://static.photos/people/200x200/42" alt="Profile">
-                            <span class="font-medium">Oluwaseyi D.</span>
-                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">₦25,000</span>
+                            <img id="header-user-avatar" class="h-8 w-8 rounded-full"
+                                src="http://static.photos/people/200x200/42" alt="Profile">
+                            <span id="header-user-name" class="font-medium">Oluwaseyi D.</span>
+                            <span id="header-user-balance"
+                                class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">₦25,000</span>
                         </button>
                         <div class="dropdown-menu mt-2 py-2 bg-white rounded-md shadow-lg">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="user" class="w-4 h-4 mr-2"></i> Profile</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="credit-card" class="w-4 h-4 mr-2"></i> Wallet</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="award" class="w-4 h-4 mr-2"></i> My Wins</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="shield" class="w-4 h-4 mr-2"></i> KYC</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                                    data-feather="user" class="w-4 h-4 mr-2"></i> Profile</a>
+                            <a href="wallet.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                                    data-feather="credit-card" class="w-4 h-4 mr-2"></i> Wallet</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                                    data-feather="award" class="w-4 h-4 mr-2"></i> My Wins</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                                    data-feather="shield" class="w-4 h-4 mr-2"></i> KYC</a>
                             <div class="border-t border-gray-100"></div>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i data-feather="log-out" class="w-4 h-4 mr-2"></i> Sign out</a>
+                            <a href="#" class="logout-btn block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                                    data-feather="log-out" class="w-4 h-4 mr-2"></i> Sign out</a>
                         </div>
                     </div>
                 </div>
+                <div class="auth-links hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <a href="login.html" class="text-gray-500 hover:text-gray-900 text-sm font-medium">Log in</a>
+                    <a href="register.html"
+                        class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Register</a>
+                </div>
                 <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                    <button type="button"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
                         <i data-feather="menu"></i>
                     </button>
                 </div>
@@ -98,330 +74,148 @@
         </div>
     </nav>
 
-    <!-- Item Details -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Content Container -->
+    <div id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Loading State -->
+        <div id="loading-state" class="text-center py-20">
+            <div class="loading-spinner"></div>
+            <p class="mt-4 text-gray-500">Loading raffle details...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="hidden text-center py-20">
+            <i data-feather="alert-circle" class="w-16 h-16 text-red-500 mx-auto"></i>
+            <h2 class="mt-4 text-xl font-semibold text-gray-900">Raffle Not Found</h2>
+            <p id="error-message" class="mt-2 text-gray-600">The raffle you're looking for doesn't exist.</p>
+            <a href="index.html" class="mt-4 inline-block text-blue-600 hover:underline">← Back to Home</a>
+        </div>
+
+        <!-- Raffle Details (hidden until loaded) -->
+        <div id="raffle-content" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Content -->
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="relative overflow-hidden">
-                        <div class="carousel-container relative w-full h-64 sm:h-96">
-                            <!-- Carousel Slides -->
-                            <div class="carousel-slides flex transition-transform duration-300 ease-in-out h-full">
-                                <div class="carousel-slide flex-shrink-0 w-full h-full">
-                                    <img class="w-full h-full object-cover" src="http://static.photos/automotive/1200x630/1" alt="Car Front View">
-                                </div>
-                                <div class="carousel-slide flex-shrink-0 w-full h-full">
-                                    <img class="w-full h-full object-cover" src="http://static.photos/automotive/1200x630/2" alt="Car Side View">
-                                </div>
-                                <div class="carousel-slide flex-shrink-0 w-full h-full">
-                                    <img class="w-full h-full object-cover" src="http://static.photos/automotive/1200x630/3" alt="Car Interior">
-                                </div>
-                                <div class="carousel-slide flex-shrink-0 w-full h-full">
-                                    <img class="w-full h-full object-cover" src="http://static.photos/automotive/1200x630/4" alt="Car Dashboard">
-                                </div>
-                            </div>
-                            
-                            <!-- Navigation Arrows -->
-                            <button class="carousel-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 hidden sm:block">
-                                <i data-feather="chevron-left"></i>
-                            </button>
-                            <button class="carousel-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 hidden sm:block">
-                                <i data-feather="chevron-right"></i>
-                            </button>
-                            
-                            <!-- Category Tag -->
-                            <div class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">Cars</div>
-                            
-                            <!-- Indicators -->
-                            <div class="absolute bottom-2 left-0 right-0 flex justify-center space-x-2">
-                                <div class="carousel-indicator w-2 h-2 rounded-full bg-white bg-opacity-50 cursor-pointer"></div>
-                                <div class="carousel-indicator w-2 h-2 rounded-full bg-white bg-opacity-50 cursor-pointer"></div>
-                                <div class="carousel-indicator w-2 h-2 rounded-full bg-white bg-opacity-50 cursor-pointer"></div>
-                                <div class="carousel-indicator w-2 h-2 rounded-full bg-white bg-opacity-50 cursor-pointer"></div>
-                            </div>
-                        </div>
+                    <!-- Image -->
+                    <div class="relative">
+                        <img id="raffle-image" class="w-full h-64 sm:h-96 object-cover" src="" alt="">
+                        <div id="raffle-category-badge"
+                            class="absolute top-2 right-2 bg-blue-600 text-white text-xs px-2 py-1 rounded"></div>
                     </div>
-                    
-                    <!-- Fullscreen Modal -->
-                    <div class="carousel-modal fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center hidden">
-                        <div class="relative max-w-4xl w-full">
-                            <button class="carousel-modal-close absolute top-4 right-4 text-white text-2xl z-10">
-                                <i data-feather="x"></i>
-                            </button>
-                            <div class="carousel-modal-slides flex transition-transform duration-300 ease-in-out">
-                                <div class="carousel-modal-slide flex-shrink-0 w-full">
-                                    <img class="w-full max-h-screen object-contain" src="http://static.photos/automotive/1200x630/1" alt="Car Front View">
-                                </div>
-                                <div class="carousel-modal-slide flex-shrink-0 w-full">
-                                    <img class="w-full max-h-screen object-contain" src="http://static.photos/automotive/1200x630/2" alt="Car Side View">
-                                </div>
-                                <div class="carousel-modal-slide flex-shrink-0 w-full">
-                                    <img class="w-full max-h-screen object-contain" src="http://static.photos/automotive/1200x630/3" alt="Car Interior">
-                                </div>
-                                <div class="carousel-modal-slide flex-shrink-0 w-full">
-                                    <img class="w-full max-h-screen object-contain" src="http://static.photos/automotive/1200x630/4" alt="Car Dashboard">
-                                </div>
-                            </div>
-                            <button class="carousel-modal-prev absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75">
-                                <i data-feather="chevron-left"></i>
-                            </button>
-                            <button class="carousel-modal-next absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75">
-                                <i data-feather="chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
+
                     <div class="p-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h1 class="text-2xl font-bold">2023 Toyota Camry</h1>
-                                <p class="text-gray-600 mt-1">Brand new luxury sedan with all features</p>
+                                <h1 id="raffle-title" class="text-2xl font-bold"></h1>
+                                <p id="raffle-short-desc" class="text-gray-600 mt-1"></p>
                             </div>
-                            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">Active</span>
+                            <span id="raffle-status-badge"
+                                class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">Active</span>
                         </div>
-                        
+
                         <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <h3 class="text-lg font-semibold">Item Value</h3>
-                                <p class="text-2xl font-bold text-blue-600">₦15,000,000</p>
+                                <p id="raffle-value" class="text-2xl font-bold text-blue-600"></p>
                             </div>
                             <div>
                                 <h3 class="text-lg font-semibold">Ticket Price</h3>
-                                <p class="text-2xl font-bold text-blue-600">₦7,500</p>
+                                <p id="raffle-ticket-price-main" class="text-2xl font-bold text-blue-600"></p>
                             </div>
                         </div>
-                        
+
                         <div class="mt-6">
                             <div class="flex justify-between items-center">
                                 <h3 class="text-lg font-semibold">Raffle Progress</h3>
-                                <span id="ticket-count" class="text-sm">1,234/4,000 tickets sold</span>
+                                <span id="ticket-count" class="text-sm"></span>
                             </div>
                             <div class="progress-bar mt-2">
-                                <div id="progress-fill" class="progress-fill"></div>
+                                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
                             </div>
                         </div>
-                        
+
                         <div class="mt-6">
                             <h3 class="text-lg font-semibold">Raffle Ends In</h3>
-                            <div class="countdown-timer text-2xl font-bold mt-2" data-end="2023-12-31T23:59:59">5d 12h 34m</div>
+                            <div id="countdown-timer" class="countdown-timer text-2xl font-bold mt-2"></div>
                         </div>
-                        
+
                         <div class="mt-6">
                             <h3 class="text-lg font-semibold">Description</h3>
-                            <div class="mt-2 text-gray-700">
-                                <p>This is a brand new 2023 Toyota Camry XSE with all the premium features including:</p>
-                                <ul class="list-disc pl-5 mt-2 space-y-1">
-                                    <li>3.5L V6 Engine with 301 HP</li>
-                                    <li>Leather-trimmed seats with heating and ventilation</li>
-                                    <li>9-inch touchscreen with Apple CarPlay and Android Auto</li>
-                                    <li>JBL premium audio system</li>
-                                    <li>Panoramic moonroof</li>
-                                    <li>Advanced safety features including adaptive cruise control</li>
-                                </ul>
-                                <p class="mt-2">Color: Midnight Black Metallic</p>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-6">
-                            <h3 class="text-lg font-semibold">Terms & Conditions</h3>
-                            <div class="mt-2 text-gray-700 text-sm">
-                                <p>1. Maximum of 4,000 tickets will be sold for this raffle.</p>
-                                <p>2. Winner will be selected randomly when all tickets are sold or at the end date.</p>
-                                <p>3. Free delivery included anywhere in Nigeria.</p>
-                                <p>4. All taxes and registration fees are covered.</p>
-                                <p>5. No refunds once tickets are purchased.</p>
-                            </div>
+                            <div id="raffle-description" class="mt-2 text-gray-700 whitespace-pre-line"></div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Comments Section -->
                 <div class="bg-white rounded-lg shadow overflow-hidden mt-8">
                     <div class="p-6">
                         <h2 class="text-xl font-semibold">Comments & Discussions</h2>
-                        
+
                         <div class="mt-4">
-                            <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Add your comment..."></textarea>
+                            <textarea id="comment-input"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                rows="3" placeholder="Add your comment..."></textarea>
                             <div class="mt-2 flex justify-end">
-                                <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Post Comment</button>
+                                <button id="post-comment-btn"
+                                    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Post
+                                    Comment</button>
                             </div>
                         </div>
-                        
-                        <div class="mt-6 space-y-4">
-                            <!-- Comment 1 -->
-                            <div class="comment-box p-4 border border-gray-200 rounded-lg">
-                                <div class="flex items-start">
-                                    <img class="h-10 w-10 rounded-full" src="http://static.photos/people/200x200/11" alt="User">
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center">
-                                            <h4 class="text-sm font-medium">Emeka C.</h4>
-                                            <span class="ml-2 text-xs text-gray-500">2 days ago</span>
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-700">This is an amazing car! I've bought 5 tickets already. Good luck to everyone!</p>
-                                        <div class="mt-2 flex items-center text-xs text-gray-500">
-                                            <button class="flex items-center hover:text-blue-600">
-                                                <i data-feather="thumbs-up" class="w-3 h-3 mr-1"></i> 12
-                                            </button>
-                                            <button class="flex items-center ml-4 hover:text-blue-600">
-                                                <i data-feather="thumbs-down" class="w-3 h-3 mr-1"></i> 2
-                                            </button>
-                                            <button class="ml-4 hover:text-blue-600">Reply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Comment 2 -->
-                            <div class="comment-box p-4 border border-gray-200 rounded-lg">
-                                <div class="flex items-start">
-                                    <img class="h-10 w-10 rounded-full" src="http://static.photos/people/200x200/12" alt="User">
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center">
-                                            <h4 class="text-sm font-medium">Amina B.</h4>
-                                            <span class="ml-2 text-xs text-gray-500">1 day ago</span>
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-700">Does this come with a warranty? And is there an option for a different color?</p>
-                                        <div class="mt-2 flex items-center text-xs text-gray-500">
-                                            <button class="flex items-center hover:text-blue-600">
-                                                <i data-feather="thumbs-up" class="w-3 h-3 mr-1"></i> 5
-                                            </button>
-                                            <button class="flex items-center ml-4 hover:text-blue-600">
-                                                <i data-feather="thumbs-down" class="w-3 h-3 mr-1"></i> 0
-                                            </button>
-                                            <button class="ml-4 hover:text-blue-600">Reply</button>
-                                        </div>
-                                        
-                                        <!-- Reply -->
-                                        <div class="mt-3 pl-4 border-l-2 border-gray-200">
-                                            <div class="flex items-start">
-                                                <img class="h-8 w-8 rounded-full" src="http://static.photos/people/200x200/13" alt="Admin">
-                                                <div class="ml-2">
-                                                    <div class="flex items-center">
-                                                        <h4 class="text-xs font-medium">BigRalph Admin</h4>
-                                                        <span class="ml-2 text-xs text-gray-500">20 hours ago</span>
-                                                    </div>
-                                                    <p class="mt-1 text-xs text-gray-700">Yes, it comes with full manufacturer warranty. Color options are limited to what's in stock.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Comment 3 -->
-                            <div class="comment-box p-4 border border-gray-200 rounded-lg">
-                                <div class="flex items-start">
-                                    <img class="h-10 w-10 rounded-full" src="http://static.photos/people/200x200/14" alt="User">
-                                    <div class="ml-3 flex-1">
-                                        <div class="flex items-center">
-                                            <h4 class="text-sm font-medium">Chinedu O.</h4>
-                                            <span class="ml-2 text-xs text-gray-500">5 hours ago</span>
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-700">I won a phone from BigRalph last month. The process was smooth and delivery was fast. Hoping to win this car too!</p>
-                                        <div class="mt-2 flex items-center text-xs text-gray-500">
-                                            <button class="flex items-center hover:text-blue-600">
-                                                <i data-feather="thumbs-up" class="w-3 h-3 mr-1"></i> 18
-                                            </button>
-                                            <button class="flex items-center ml-4 hover:text-blue-600">
-                                                <i data-feather="thumbs-down" class="w-3 h-3 mr-1"></i> 1
-                                            </button>
-                                            <button class="ml-4 hover:text-blue-600">Reply</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div id="comments-container" class="mt-6 space-y-4">
+                            <div class="loading-spinner"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Sidebar -->
             <div class="lg:col-span-1">
                 <div class="bg-white rounded-lg shadow overflow-hidden sticky top-4">
                     <div class="p-6">
                         <h2 class="text-xl font-semibold">Buy Tickets</h2>
-                        
+
                         <div class="mt-6">
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">Available tickets:</span>
-                                <span class="font-medium">1,766 left</span>
+                                <span id="available-tickets" class="font-medium"></span>
                             </div>
                             <div class="mt-2">
                                 <div class="flex items-center justify-between">
                                     <span class="text-gray-600">Price per ticket:</span>
-                                    <span class="font-bold text-blue-600">₦5,000</span>
+                                    <span id="raffle-ticket-price" class="font-bold text-blue-600"></span>
                                 </div>
                             </div>
-                            
+
                             <div class="mt-6">
-                                <label for="quantity" class="block text-sm font-medium text-gray-700">Number of tickets</label>
+                                <label for="quantity" class="block text-sm font-medium text-gray-700">Number of
+                                    tickets</label>
                                 <div class="mt-1 flex rounded-md shadow-sm">
-                                    <button id="decrement-btn" class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-l-md hover:bg-gray-200">-</button>
-                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10" class="flex-1 min-w-0 block w-full px-3 py-2 border-t border-b border-gray-300 text-center focus:ring-blue-500 focus:border-blue-500">
-                                    <button id="increment-btn" class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-r-md hover:bg-gray-200">+</button>
+                                    <button id="decrement-btn"
+                                        class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-l-md hover:bg-gray-200">-</button>
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10"
+                                        class="flex-1 min-w-0 block w-full px-3 py-2 border-t border-b border-gray-300 text-center focus:ring-blue-500 focus:border-blue-500">
+                                    <button id="increment-btn"
+                                        class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-r-md hover:bg-gray-200">+</button>
                                 </div>
-                                <p class="mt-1 text-xs text-gray-500">Max 10 tickets per user</p>
+                                <p class="mt-1 text-xs text-gray-500">Max 10 tickets per purchase</p>
                             </div>
-                            
+
                             <div class="mt-4">
                                 <div class="flex justify-between items-center">
                                     <span class="text-gray-600">Total:</span>
-                                    <span id="total-price" class="text-xl font-bold">₦5,000</span>
+                                    <span id="total-price" class="text-xl font-bold"></span>
                                 </div>
                             </div>
-                            
-                            <button class="mt-6 w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 font-medium flex items-center justify-center">
+
+                            <button id="buy-tickets-btn"
+                                class="mt-6 w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 font-medium flex items-center justify-center">
                                 <i class="fa-solid fa-ticket mr-2"></i> Buy Tickets
                             </button>
-                            
+
                             <div class="mt-4 text-center text-sm text-gray-500">
-                                <p>By purchasing, you agree to our <a href="#" class="text-blue-600 hover:underline">Terms</a></p>
+                                <p>By purchasing, you agree to our <a href="#"
+                                        class="text-blue-600 hover:underline">Terms</a></p>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-gray-200 p-6">
-                        <h2 class="text-xl font-semibold">Similar Raffles</h2>
-                        
-                        <div class="mt-4 space-y-4">
-                            <a href="#" class="group flex items-start">
-                                <div class="flex-shrink-0">
-                                    <img class="h-16 w-16 rounded-md object-cover" src="http://static.photos/automotive/200x200/15" alt="Car">
-                                </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-gray-900 group-hover:text-blue-600">2023 Lexus RX 350</h3>
-                                    <p class="text-xs text-gray-500">₦7,000 per ticket</p>
-                                    <div class="mt-1 flex items-center text-xs text-gray-500">
-                                        <span>1,200/2,500 tickets</span>
-                                    </div>
-                                </div>
-                            </a>
-                            
-                            <a href="#" class="group flex items-start">
-                                <div class="flex-shrink-0">
-                                    <img class="h-16 w-16 rounded-md object-cover" src="http://static.photos/automotive/200x200/16" alt="Car">
-                                </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-gray-900 group-hover:text-blue-600">2023 Honda Accord</h3>
-                                    <p class="text-xs text-gray-500">₦4,500 per ticket</p>
-                                    <div class="mt-1 flex items-center text-xs text-gray-500">
-                                        <span>890/2,000 tickets</span>
-                                    </div>
-                                </div>
-                            </a>
-                            
-                            <a href="#" class="group flex items-start">
-                                <div class="flex-shrink-0">
-                                    <img class="h-16 w-16 rounded-md object-cover" src="http://static.photos/automotive/200x200/17" alt="Car">
-                                </div>
-                                <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-gray-900 group-hover:text-blue-600">2023 Mercedes C-Class</h3>
-                                    <p class="text-xs text-gray-500">₦8,000 per ticket</p>
-                                    <div class="mt-1 flex items-center text-xs text-gray-500">
-                                        <span>1,543/3,000 tickets</span>
-                                    </div>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -438,245 +232,430 @@
                     <p class="text-gray-400 text-sm">Your chance to win amazing prizes at affordable prices.</p>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Quick Links</h
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white text-sm">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Categories</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Winners</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white text-sm">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">FAQ</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i data-feather="linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
+                <p>© 2023 BigRalph. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    <!-- Scripts -->
+    <script src="script.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Ticket quantity and price calculation
-            const ticketPrice = 5000;
+        // API Configuration
+        const API_BASE = '/api/v1';
+
+        // Current raffle data (stored globally for ticket purchase)
+        let currentRaffle = null;
+
+        // Get raffle ID from URL
+        function getRaffleId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // Format currency in Naira
+        function formatCurrency(amount) {
+            return '₦' + amount.toLocaleString();
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Calculate and update countdown
+        function updateCountdown(endTime) {
+            const timerEl = document.getElementById('countdown-timer');
+
+            function update() {
+                const endDate = new Date(endTime).getTime();
+                const now = new Date().getTime();
+                const distance = endDate - now;
+
+                if (distance < 0) {
+                    timerEl.textContent = 'Raffle ended';
+                    timerEl.classList.add('text-red-600');
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        // Update UI with raffle data
+        function populateRaffleUI(raffle) {
+            currentRaffle = raffle;
+
+            // Update page title
+            document.title = `${raffle.title} | BigRalph`;
+
+            // Populate main info
+            document.getElementById('raffle-image').src = raffle.image || 'https://via.placeholder.com/1200x630';
+            document.getElementById('raffle-image').alt = raffle.title;
+            document.getElementById('raffle-title').textContent = raffle.title;
+            document.getElementById('raffle-short-desc').textContent = raffle.description?.split('\n')[0] || '';
+            document.getElementById('raffle-category-badge').textContent = raffle.category;
+
+            // Category color
+            const categoryColors = {
+                'Cars': 'bg-blue-600',
+                'Electronics': 'bg-purple-600',
+                'Gadgets': 'bg-purple-600',
+                'Land': 'bg-green-600',
+                'Fashion': 'bg-pink-600'
+            };
+            const badge = document.getElementById('raffle-category-badge');
+            badge.className = `absolute top-2 right-2 ${categoryColors[raffle.category] || 'bg-gray-600'} text-white text-xs px-2 py-1 rounded`;
+
+            // Status badge
+            const statusBadge = document.getElementById('raffle-status-badge');
+            if (raffle.is_ended) {
+                statusBadge.textContent = 'Ended';
+                statusBadge.className = 'bg-red-100 text-red-800 text-sm font-medium px-2.5 py-0.5 rounded';
+                document.getElementById('buy-tickets-btn').disabled = true;
+                document.getElementById('buy-tickets-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            } else if (raffle.tickets_sold >= raffle.total_tickets) {
+                statusBadge.textContent = 'Sold Out';
+                statusBadge.className = 'bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-0.5 rounded';
+                document.getElementById('buy-tickets-btn').disabled = true;
+                document.getElementById('buy-tickets-btn').classList.add('opacity-50', 'cursor-not-allowed');
+            }
+
+            // Value and price
+            document.getElementById('raffle-value').textContent = raffle.item_value ? formatCurrency(raffle.item_value) : 'N/A';
+            document.getElementById('raffle-ticket-price-main').textContent = formatCurrency(raffle.ticket_price);
+            document.getElementById('raffle-ticket-price').textContent = formatCurrency(raffle.ticket_price);
+
+            // Progress
+            const progress = raffle.progress_percent || 0;
+            document.getElementById('ticket-count').textContent = `${raffle.tickets_sold.toLocaleString()}/${raffle.total_tickets.toLocaleString()} tickets sold`;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+
+            // Available tickets
+            const available = raffle.total_tickets - raffle.tickets_sold;
+            document.getElementById('available-tickets').textContent = `${available.toLocaleString()} left`;
+
+            // Description
+            document.getElementById('raffle-description').textContent = raffle.description || 'No description available.';
+
+            // Countdown
+            updateCountdown(raffle.end_time);
+
+            // Update total price
+            updateTotalPrice();
+        }
+
+        // Update total price based on quantity
+        function updateTotalPrice() {
+            if (!currentRaffle) return;
+
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const total = quantity * currentRaffle.ticket_price;
+            document.getElementById('total-price').textContent = formatCurrency(total);
+        }
+
+        // Setup ticket quantity controls
+        function setupQuantityControls() {
             const quantityInput = document.getElementById('quantity');
             const decrementBtn = document.getElementById('decrement-btn');
             const incrementBtn = document.getElementById('increment-btn');
-            const totalPriceEl = document.getElementById('total-price');
-
-            function updateTotalPrice() {
-                const quantity = parseInt(quantityInput.value) || 1;
-                const total = quantity * ticketPrice;
-                totalPriceEl.textContent = `₦${total.toLocaleString()}`;
-            }
 
             decrementBtn.addEventListener('click', () => {
                 let value = parseInt(quantityInput.value) || 1;
                 if (value > 1) {
-                    value--;
-                    quantityInput.value = value;
+                    quantityInput.value = value - 1;
                     updateTotalPrice();
                 }
             });
 
             incrementBtn.addEventListener('click', () => {
                 let value = parseInt(quantityInput.value) || 0;
-                value++;
-                quantityInput.value = value;
-                updateTotalPrice();
+                if (value < 10) {
+                    quantityInput.value = value + 1;
+                    updateTotalPrice();
+                }
             });
 
             quantityInput.addEventListener('input', () => {
                 let value = parseInt(quantityInput.value);
                 if (isNaN(value) || value < 1) {
                     quantityInput.value = 1;
+                } else if (value > 10) {
+                    quantityInput.value = 10;
                 }
                 updateTotalPrice();
             });
+        }
 
-            // Initialize total price
-            updateTotalPrice();
+        // Purchase tickets
+        async function purchaseTickets() {
+            if (!currentRaffle) return;
 
-            // Ticket progress calculation
-            const countEl = document.getElementById("ticket-count");
-            const fillEl = document.getElementById("progress-fill");
+            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const buyBtn = document.getElementById('buy-tickets-btn');
 
-            if (countEl && fillEl) {
-                const text = countEl.textContent.trim();
-                const match = text.match(/([\d,]+)\/([\d,]+)/);
+            // Disable button during purchase
+            buyBtn.disabled = true;
+            buyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...';
 
-                if (match) {
-                    const sold = parseInt(match[1].replace(/,/g, ""), 10);
-                    const total = parseInt(match[2].replace(/,/g, ""), 10);
+            try {
+                const response = await fetch(`${API_BASE}/raffles/${currentRaffle.id}/tickets`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ quantity })
+                });
 
-                    if (total > 0) {
-                        const percent = Math.min((sold / total) * 100, 100);
-                        fillEl.style.width = percent + "%";
-                    }
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Purchase failed');
                 }
+
+                // Success - update UI with new raffle data
+                showToast(`Successfully purchased ${quantity} ticket(s)!`, 'success');
+                populateRaffleUI(data.raffle);
+
+            } catch (error) {
+                console.error('Purchase error:', error);
+                showToast(error.message || 'Failed to purchase tickets', 'error');
+            } finally {
+                buyBtn.disabled = false;
+                buyBtn.innerHTML = '<i class="fa-solid fa-ticket mr-2"></i> Buy Tickets';
+            }
+        }
+
+        // Create comment HTML
+        function createCommentHTML(comment) {
+            const timeAgo = getTimeAgo(comment.created_at);
+            const isAdmin = comment.is_admin;
+
+            return `
+            <div class="comment-box p-4 border ${isAdmin ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} rounded-lg">
+                <div class="flex items-start">
+                    <img class="h-10 w-10 rounded-full" src="http://static.photos/people/200x200/${Math.floor(Math.random() * 50) + 1}" alt="User">
+                    <div class="ml-3 flex-1">
+                        <div class="flex items-center">
+                            <h4 class="text-sm font-medium">${escapeHTML(comment.author)}</h4>
+                            ${isAdmin ? '<span class="ml-2 text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded">Admin</span>' : ''}
+                            <span class="ml-2 text-xs text-gray-500">${timeAgo}</span>
+                        </div>
+                        <p class="mt-1 text-sm text-gray-700">${escapeHTML(comment.message)}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        }
+
+        // Get time ago string
+        function getTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+
+            if (seconds < 60) return 'just now';
+            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+            if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
+            return date.toLocaleDateString();
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // Load comments
+        async function loadComments(raffleId) {
+            const container = document.getElementById('comments-container');
+
+            try {
+                const response = await fetch(`${API_BASE}/raffles/${raffleId}/comments`);
+
+                if (!response.ok) {
+                    throw new Error('Failed to load comments');
+                }
+
+                const comments = await response.json();
+
+                if (comments.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>';
+                    return;
+                }
+
+                container.innerHTML = comments.map(createCommentHTML).join('');
+
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                container.innerHTML = '<p class="text-red-500 text-center py-4">Failed to load comments.</p>';
+            }
+        }
+
+        // Post comment
+        async function postComment(raffleId) {
+            const input = document.getElementById('comment-input');
+            const message = input.value.trim();
+
+            if (!message) {
+                showToast('Please enter a comment', 'error');
+                return;
             }
 
-            // Carousel functionality
-            class Carousel {
-                constructor(container) {
-                    this.container = container;
-                    this.slides = container.querySelector('.carousel-slides');
-                    this.slideItems = container.querySelectorAll('.carousel-slide');
-                    this.prevBtn = container.querySelector('.carousel-prev');
-                    this.nextBtn = container.querySelector('.carousel-next');
-                    this.indicators = container.querySelectorAll('.carousel-indicator');
-                    this.currentIndex = 0;
-                    this.totalSlides = this.slideItems.length;
-                    this.autoPlayInterval = null;
-                    this.autoPlayDelay = 15000;
-                    this.touchStartX = 0;
-                    this.touchEndX = 0;
-                    
-                    this.init();
+            const btn = document.getElementById('post-comment-btn');
+            btn.disabled = true;
+            btn.textContent = 'Posting...';
+
+            try {
+                const response = await fetch(`${API_BASE}/raffles/${raffleId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        author: 'Oluwaseyi D.',  // Hardcoded for now (no auth)
+                        message: message,
+                        is_admin: false
+                    })
+                });
+
+                if (!response.ok) {
+                    const data = await response.json();
+                    throw new Error(data.detail || 'Failed to post comment');
                 }
-                
-                init() {
-                    // Set initial active indicator
-                    this.updateIndicators();
-                    
-                    // Event listeners
-                    if (this.prevBtn) {
-                        this.prevBtn.addEventListener('click', () => this.prevSlide());
-                    }
-                    
-                    if (this.nextBtn) {
-                        this.nextBtn.addEventListener('click', () => this.nextSlide());
-                    }
-                    
-                    this.indicators.forEach((indicator, index) => {
-                        indicator.addEventListener('click', () => this.goToSlide(index));
-                    });
-                    
-                    // Touch events for mobile
-                    this.container.addEventListener('touchstart', (e) => {
-                        this.touchStartX = e.changedTouches[0].screenX;
-                        this.resetAutoPlay();
-                    }, {passive: true});
-                    
-                    this.container.addEventListener('touchend', (e) => {
-                        this.touchEndX = e.changedTouches[0].screenX;
-                        this.handleSwipe();
-                    }, {passive: true});
-                    
-                    // Click to open modal
-                    this.slideItems.forEach(slide => {
-                        slide.addEventListener('click', () => {
-                            const index = Array.from(this.slideItems).indexOf(slide);
-                            this.openModal(index);
-                        });
-                    });
-                    
-                    // Start auto play
-                    this.startAutoPlay();
+
+                const newComment = await response.json();
+
+                // Clear input
+                input.value = '';
+
+                // Prepend new comment or reload all
+                const container = document.getElementById('comments-container');
+                const noCommentsMsg = container.querySelector('p.text-gray-500');
+                if (noCommentsMsg) {
+                    container.innerHTML = '';
                 }
-                
-                updateSlides() {
-                    this.slides.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-                    this.updateIndicators();
-                }
-                
-                updateIndicators() {
-                    this.indicators.forEach((indicator, index) => {
-                        if (index === this.currentIndex) {
-                            indicator.classList.add('bg-opacity-100');
-                            indicator.classList.remove('bg-opacity-50');
-                        } else {
-                            indicator.classList.add('bg-opacity-50');
-                            indicator.classList.remove('bg-opacity-100');
-                        }
-                    });
-                }
-                
-                nextSlide() {
-                    this.currentIndex = (this.currentIndex + 1) % this.totalSlides;
-                    this.updateSlides();
-                    this.resetAutoPlay();
-                }
-                
-                prevSlide() {
-                    this.currentIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
-                    this.updateSlides();
-                    this.resetAutoPlay();
-                }
-                
-                goToSlide(index) {
-                    this.currentIndex = index;
-                    this.updateSlides();
-                    this.resetAutoPlay();
-                }
-                
-                handleSwipe() {
-                    const threshold = 50;
-                    const difference = this.touchStartX - this.touchEndX;
-                    
-                    if (difference > threshold) {
-                        this.nextSlide();
-                    } else if (difference < -threshold) {
-                        this.prevSlide();
-                    }
-                }
-                
-                startAutoPlay() {
-                    this.autoPlayInterval = setInterval(() => this.nextSlide(), this.autoPlayDelay);
-                }
-                
-                resetAutoPlay() {
-                    clearInterval(this.autoPlayInterval);
-                    this.startAutoPlay();
-                }
-                
-                openModal(index) {
-                    this.currentIndex = index;
-                    const modal = document.querySelector('.carousel-modal');
-                    const modalSlides = modal.querySelector('.carousel-modal-slides');
-                    
-                    modalSlides.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-                    modal.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                    
-                    // Initialize modal controls
-                    modal.querySelector('.carousel-modal-close').addEventListener('click', () => this.closeModal());
-                    modal.querySelector('.carousel-modal-prev').addEventListener('click', () => {
-                        this.prevSlide();
-                        modalSlides.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-                    });
-                    modal.querySelector('.carousel-modal-next').addEventListener('click', () => {
-                        this.nextSlide();
-                        modalSlides.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-                    });
-                    
-                    // Close when clicking outside
-                    modal.addEventListener('click', (e) => {
-                        if (e.target === modal) {
-                            this.closeModal();
-                        }
-                    });
-                    
-                    // Touch events for modal
-                    modal.addEventListener('touchstart', (e) => {
-                        this.touchStartX = e.changedTouches[0].screenX;
-                    }, {passive: true});
-                    
-                    modal.addEventListener('touchend', (e) => {
-                        this.touchEndX = e.changedTouches[0].screenX;
-                        const difference = this.touchStartX - this.touchEndX;
-                        const threshold = 50;
-                        
-                        if (difference > threshold) {
-                            this.nextSlide();
-                        } else if (difference < -threshold) {
-                            this.prevSlide();
-                        }
-                        modalSlides.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-                    }, {passive: true});
-                }
-                
-                closeModal() {
-                    document.querySelector('.carousel-modal').classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
+                container.insertAdjacentHTML('afterbegin', createCommentHTML(newComment));
+
+                showToast('Comment posted!', 'success');
+
+            } catch (error) {
+                console.error('Error posting comment:', error);
+                showToast(error.message || 'Failed to post comment', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Post Comment';
             }
-            
-            // Initialize carousels
-            const carousels = document.querySelectorAll('.carousel-container');
-            carousels.forEach(container => new Carousel(container));
-            
-            // initialize feather icons
-            if (window.feather) {
-                feather.replace();
+        }
+
+        // Load raffle details
+        async function loadRaffleDetails() {
+            const raffleId = getRaffleId();
+
+            if (!raffleId) {
+                showError('No raffle ID provided');
+                return;
             }
+
+            try {
+                const response = await fetch(`${API_BASE}/raffles/${raffleId}`);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error('Raffle not found');
+                    }
+                    throw new Error('Failed to load raffle');
+                }
+
+                const raffle = await response.json();
+
+                // Hide loading, show content
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('raffle-content').classList.remove('hidden');
+
+                // Populate UI
+                populateRaffleUI(raffle);
+
+                // Load comments
+                loadComments(raffleId);
+
+            } catch (error) {
+                console.error('Error loading raffle:', error);
+                showError(error.message);
+            }
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('loading-state').classList.add('hidden');
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = message;
+            feather.replace();
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init();
+            feather.replace();
+
+            // Setup controls
+            setupQuantityControls();
+
+            // Setup buy button
+            document.getElementById('buy-tickets-btn').addEventListener('click', purchaseTickets);
+
+            // Setup comment posting
+            document.getElementById('post-comment-btn').addEventListener('click', () => {
+                postComment(getRaffleId());
+            });
+
+            // Load raffle details
+            loadRaffleDetails();
         });
     </script>
 </body>
+
 </html>
