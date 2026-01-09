@@ -17,8 +17,9 @@ body {
     z-index: 10;
 }
 
+/* Disable hover-based dropdowns completely */
 .dropdown:hover .dropdown-menu {
-    display: block;
+    display: none !important;
 }
 
 /* ==========================================================================

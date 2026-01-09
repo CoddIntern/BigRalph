@@ -192,12 +192,12 @@
                                 <div class="mt-1 flex rounded-md shadow-sm">
                                     <button id="decrement-btn"
                                         class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-l-md hover:bg-gray-200">-</button>
-                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="10"
+                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="1000000"
                                         class="flex-1 min-w-0 block w-full px-3 py-2 border-t border-b border-gray-300 text-center focus:ring-blue-500 focus:border-blue-500">
                                     <button id="increment-btn"
                                         class="px-3 py-2 border border-gray-300 bg-gray-100 text-gray-700 rounded-r-md hover:bg-gray-200">+</button>
                                 </div>
-                                <p class="mt-1 text-xs text-gray-500">Max 10 tickets per purchase</p>
+                                <!-- <p class="mt-1 text-xs text-gray-500">Max 10 tickets per purchase</p> -->
                             </div>
 
                             <div class="mt-4">
@@ -260,402 +260,182 @@
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-                <p>© 2023 BigRalph. All rights reserved.</p>
+                <p>© 2026 BigRalph. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
     <script>
-        // API Configuration
+        // ================================
+        // CONFIG
+        // ================================
         const API_BASE = '/api/v1';
+        const MAX_TICKETS_PER_PURCHASE = 1_000_000;
 
-        // Current raffle data (stored globally for ticket purchase)
+        // ================================
+        // STATE
+        // ================================
         let currentRaffle = null;
+        let effectiveMaxTickets = MAX_TICKETS_PER_PURCHASE;
 
-        // Get raffle ID from URL
+        // ================================
+        // HELPERS
+        // ================================
         function getRaffleId() {
             const params = new URLSearchParams(window.location.search);
             return params.get('id');
         }
 
-        // Format currency in Naira
         function formatCurrency(amount) {
             return '₦' + amount.toLocaleString();
         }
 
-        // Show toast notification
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             toast.textContent = message;
             document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.remove();
-            }, 4000);
+            setTimeout(() => toast.remove(), 4000);
         }
 
-        // Calculate and update countdown
-        function updateCountdown(endTime) {
-            const timerEl = document.getElementById('countdown-timer');
-
-            function update() {
-                const endDate = new Date(endTime).getTime();
-                const now = new Date().getTime();
-                const distance = endDate - now;
-
-                if (distance < 0) {
-                    timerEl.textContent = 'Raffle ended';
-                    timerEl.classList.add('text-red-600');
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-            }
-
-            update();
-            setInterval(update, 1000);
-        }
-
-        // Update UI with raffle data
+        // ================================
+        // UI POPULATION
+        // ================================
         function populateRaffleUI(raffle) {
             currentRaffle = raffle;
 
-            // Update page title
+            const availableTickets = raffle.total_tickets - raffle.tickets_sold;
+            effectiveMaxTickets = Math.min(MAX_TICKETS_PER_PURCHASE, availableTickets);
+
+            // Update input max dynamically
+            const quantityInput = document.getElementById('quantity');
+            quantityInput.max = effectiveMaxTickets;
+
             document.title = `${raffle.title} | BigRalph`;
-
-            // Populate main info
-            document.getElementById('raffle-image').src = raffle.image || 'https://via.placeholder.com/1200x630';
-            document.getElementById('raffle-image').alt = raffle.title;
             document.getElementById('raffle-title').textContent = raffle.title;
-            document.getElementById('raffle-short-desc').textContent = raffle.description?.split('\n')[0] || '';
-            document.getElementById('raffle-category-badge').textContent = raffle.category;
-
-            // Category color
-            const categoryColors = {
-                'Cars': 'bg-blue-600',
-                'Electronics': 'bg-purple-600',
-                'Gadgets': 'bg-purple-600',
-                'Land': 'bg-green-600',
-                'Fashion': 'bg-pink-600'
-            };
-            const badge = document.getElementById('raffle-category-badge');
-            badge.className = `absolute top-2 right-2 ${categoryColors[raffle.category] || 'bg-gray-600'} text-white text-xs px-2 py-1 rounded`;
-
-            // Status badge
-            const statusBadge = document.getElementById('raffle-status-badge');
-            if (raffle.is_ended) {
-                statusBadge.textContent = 'Ended';
-                statusBadge.className = 'bg-red-100 text-red-800 text-sm font-medium px-2.5 py-0.5 rounded';
-                document.getElementById('buy-tickets-btn').disabled = true;
-                document.getElementById('buy-tickets-btn').classList.add('opacity-50', 'cursor-not-allowed');
-            } else if (raffle.tickets_sold >= raffle.total_tickets) {
-                statusBadge.textContent = 'Sold Out';
-                statusBadge.className = 'bg-yellow-100 text-yellow-800 text-sm font-medium px-2.5 py-0.5 rounded';
-                document.getElementById('buy-tickets-btn').disabled = true;
-                document.getElementById('buy-tickets-btn').classList.add('opacity-50', 'cursor-not-allowed');
-            }
-
-            // Value and price
-            document.getElementById('raffle-value').textContent = raffle.item_value ? formatCurrency(raffle.item_value) : 'N/A';
-            document.getElementById('raffle-ticket-price-main').textContent = formatCurrency(raffle.ticket_price);
+            document.getElementById('raffle-image').src = raffle.image;
             document.getElementById('raffle-ticket-price').textContent = formatCurrency(raffle.ticket_price);
+            document.getElementById('raffle-ticket-price-main').textContent = formatCurrency(raffle.ticket_price);
+            document.getElementById('available-tickets').textContent = `${availableTickets.toLocaleString()} left`;
 
-            // Progress
-            const progress = raffle.progress_percent || 0;
-            document.getElementById('ticket-count').textContent = `${raffle.tickets_sold.toLocaleString()}/${raffle.total_tickets.toLocaleString()} tickets sold`;
-            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('ticket-count').textContent =
+                `${raffle.tickets_sold.toLocaleString()}/${raffle.total_tickets.toLocaleString()} tickets sold`;
 
-            // Available tickets
-            const available = raffle.total_tickets - raffle.tickets_sold;
-            document.getElementById('available-tickets').textContent = `${available.toLocaleString()} left`;
+            document.getElementById('progress-fill').style.width =
+                `${raffle.progress_percent || 0}%`;
 
-            // Description
-            document.getElementById('raffle-description').textContent = raffle.description || 'No description available.';
+            document.getElementById('raffle-description').textContent = raffle.description || '';
 
-            // Countdown
-            updateCountdown(raffle.end_time);
-
-            // Update total price
             updateTotalPrice();
         }
 
-        // Update total price based on quantity
+        // ================================
+        // PRICE CALCULATION
+        // ================================
         function updateTotalPrice() {
             if (!currentRaffle) return;
 
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
-            const total = quantity * currentRaffle.ticket_price;
-            document.getElementById('total-price').textContent = formatCurrency(total);
+            const qty = Number(document.getElementById('quantity').value) || 1;
+            document.getElementById('total-price').textContent =
+                formatCurrency(qty * currentRaffle.ticket_price);
         }
 
-        // Setup ticket quantity controls
+        // ================================
+        // QUANTITY CONTROLS
+        // ================================
         function setupQuantityControls() {
             const quantityInput = document.getElementById('quantity');
             const decrementBtn = document.getElementById('decrement-btn');
             const incrementBtn = document.getElementById('increment-btn');
 
             decrementBtn.addEventListener('click', () => {
-                let value = parseInt(quantityInput.value) || 1;
-                if (value > 1) {
-                    quantityInput.value = value - 1;
-                    updateTotalPrice();
-                }
+                quantityInput.value = Math.max(1, Number(quantityInput.value) - 1);
+                updateTotalPrice();
             });
 
             incrementBtn.addEventListener('click', () => {
-                let value = parseInt(quantityInput.value) || 0;
-                if (value < 10) {
-                    quantityInput.value = value + 1;
-                    updateTotalPrice();
-                }
+                quantityInput.value = Math.min(
+                    effectiveMaxTickets,
+                    Number(quantityInput.value) + 1
+                );
+                updateTotalPrice();
             });
 
             quantityInput.addEventListener('input', () => {
-                let value = parseInt(quantityInput.value);
-                if (isNaN(value) || value < 1) {
-                    quantityInput.value = 1;
-                } else if (value > 10) {
-                    quantityInput.value = 10;
-                }
+                let value = Number(quantityInput.value);
+                if (isNaN(value) || value < 1) value = 1;
+                if (value > effectiveMaxTickets) value = effectiveMaxTickets;
+                quantityInput.value = value;
                 updateTotalPrice();
             });
         }
 
-        // Purchase tickets
+        // ================================
+        // PURCHASE
+        // ================================
         async function purchaseTickets() {
             if (!currentRaffle) return;
 
-            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+            const quantity = Number(document.getElementById('quantity').value) || 1;
             const buyBtn = document.getElementById('buy-tickets-btn');
 
-            // Disable button during purchase
             buyBtn.disabled = true;
             buyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...';
 
             try {
-                const response = await fetch(`${API_BASE}/raffles/${currentRaffle.id}/tickets`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ quantity })
-                });
+                const res = await fetch(
+                    `${API_BASE}/raffles/${currentRaffle.id}/tickets`,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ quantity })
+                    }
+                );
 
-                const data = await response.json();
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.detail || 'Purchase failed');
 
-                if (!response.ok) {
-                    throw new Error(data.detail || 'Purchase failed');
-                }
-
-                // Success - update UI with new raffle data
-                showToast(`Successfully purchased ${quantity} ticket(s)!`, 'success');
+                showToast(`Successfully purchased ${quantity} ticket(s)`);
                 populateRaffleUI(data.raffle);
 
-            } catch (error) {
-                console.error('Purchase error:', error);
-                showToast(error.message || 'Failed to purchase tickets', 'error');
+            } catch (err) {
+                console.error(err);
+                showToast(err.message, 'error');
             } finally {
                 buyBtn.disabled = false;
                 buyBtn.innerHTML = '<i class="fa-solid fa-ticket mr-2"></i> Buy Tickets';
             }
         }
 
-        // Create comment HTML
-        function createCommentHTML(comment) {
-            const timeAgo = getTimeAgo(comment.created_at);
-            const isAdmin = comment.is_admin;
-
-            return `
-            <div class="comment-box p-4 border ${isAdmin ? 'border-blue-200 bg-blue-50' : 'border-gray-200'} rounded-lg">
-                <div class="flex items-start">
-                    <img class="h-10 w-10 rounded-full" src="http://static.photos/people/200x200/${Math.floor(Math.random() * 50) + 1}" alt="User">
-                    <div class="ml-3 flex-1">
-                        <div class="flex items-center">
-                            <h4 class="text-sm font-medium">${escapeHTML(comment.author)}</h4>
-                            ${isAdmin ? '<span class="ml-2 text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded">Admin</span>' : ''}
-                            <span class="ml-2 text-xs text-gray-500">${timeAgo}</span>
-                        </div>
-                        <p class="mt-1 text-sm text-gray-700">${escapeHTML(comment.message)}</p>
-                    </div>
-                </div>
-            </div>
-        `;
-        }
-
-        // Get time ago string
-        function getTimeAgo(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
-
-            if (seconds < 60) return 'just now';
-            if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
-            if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-            if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
-            return date.toLocaleDateString();
-        }
-
-        // Escape HTML to prevent XSS
-        function escapeHTML(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        // Load comments
-        async function loadComments(raffleId) {
-            const container = document.getElementById('comments-container');
-
-            try {
-                const response = await fetch(`${API_BASE}/raffles/${raffleId}/comments`);
-
-                if (!response.ok) {
-                    throw new Error('Failed to load comments');
-                }
-
-                const comments = await response.json();
-
-                if (comments.length === 0) {
-                    container.innerHTML = '<p class="text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>';
-                    return;
-                }
-
-                container.innerHTML = comments.map(createCommentHTML).join('');
-
-            } catch (error) {
-                console.error('Error loading comments:', error);
-                container.innerHTML = '<p class="text-red-500 text-center py-4">Failed to load comments.</p>';
-            }
-        }
-
-        // Post comment
-        async function postComment(raffleId) {
-            const input = document.getElementById('comment-input');
-            const message = input.value.trim();
-
-            if (!message) {
-                showToast('Please enter a comment', 'error');
-                return;
-            }
-
-            const btn = document.getElementById('post-comment-btn');
-            btn.disabled = true;
-            btn.textContent = 'Posting...';
-
-            try {
-                const response = await fetch(`${API_BASE}/raffles/${raffleId}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        author: 'Oluwaseyi D.',  // Hardcoded for now (no auth)
-                        message: message,
-                        is_admin: false
-                    })
-                });
-
-                if (!response.ok) {
-                    const data = await response.json();
-                    throw new Error(data.detail || 'Failed to post comment');
-                }
-
-                const newComment = await response.json();
-
-                // Clear input
-                input.value = '';
-
-                // Prepend new comment or reload all
-                const container = document.getElementById('comments-container');
-                const noCommentsMsg = container.querySelector('p.text-gray-500');
-                if (noCommentsMsg) {
-                    container.innerHTML = '';
-                }
-                container.insertAdjacentHTML('afterbegin', createCommentHTML(newComment));
-
-                showToast('Comment posted!', 'success');
-
-            } catch (error) {
-                console.error('Error posting comment:', error);
-                showToast(error.message || 'Failed to post comment', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Post Comment';
-            }
-        }
-
-        // Load raffle details
+        // ================================
+        // DATA LOADING
+        // ================================
         async function loadRaffleDetails() {
             const raffleId = getRaffleId();
+            if (!raffleId) return;
 
-            if (!raffleId) {
-                showError('No raffle ID provided');
-                return;
-            }
+            const res = await fetch(`${API_BASE}/raffles/${raffleId}`);
+            if (!res.ok) return;
 
-            try {
-                const response = await fetch(`${API_BASE}/raffles/${raffleId}`);
-
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        throw new Error('Raffle not found');
-                    }
-                    throw new Error('Failed to load raffle');
-                }
-
-                const raffle = await response.json();
-
-                // Hide loading, show content
-                document.getElementById('loading-state').classList.add('hidden');
-                document.getElementById('raffle-content').classList.remove('hidden');
-
-                // Populate UI
-                populateRaffleUI(raffle);
-
-                // Load comments
-                loadComments(raffleId);
-
-            } catch (error) {
-                console.error('Error loading raffle:', error);
-                showError(error.message);
-            }
-        }
-
-        // Show error state
-        function showError(message) {
+            const raffle = await res.json();
             document.getElementById('loading-state').classList.add('hidden');
-            document.getElementById('error-state').classList.remove('hidden');
-            document.getElementById('error-message').textContent = message;
-            feather.replace();
+            document.getElementById('raffle-content').classList.remove('hidden');
+
+            populateRaffleUI(raffle);
         }
 
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function () {
-            AOS.init();
+        // ================================
+        // INIT
+        // ================================
+        document.addEventListener('DOMContentLoaded', () => {
             feather.replace();
-
-            // Setup controls
             setupQuantityControls();
-
-            // Setup buy button
             document.getElementById('buy-tickets-btn').addEventListener('click', purchaseTickets);
-
-            // Setup comment posting
-            document.getElementById('post-comment-btn').addEventListener('click', () => {
-                postComment(getRaffleId());
-            });
-
-            // Load raffle details
             loadRaffleDetails();
         });
     </script>
+
 </body>
 
 </html>

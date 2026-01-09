@@ -198,7 +198,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400 text-sm">
-                <p>© 2023 BigRalph. All rights reserved.</p>
+                <p>© 2026 BigRalph. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -244,10 +244,9 @@
             const categoryColor = categoryColors[raffle.category] || 'bg-gray-600';
             const progress = raffle.progress_percent || 0;
             const description = raffle.description ? raffle.description.split('\n')[0].substring(0, 50) + '...' : '';
-
             return `
-            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300" data-aos="fade-up" data-aos-delay="${delay}">
-                <div class="relative">
+            <div class="bg-white rounded-lg shadow overflow-hidden raffle-card transition-all duration-300 cursor-pointer" data-aos="fade-up" data-aos-delay="${delay}" tabindex="0" onclick="window.location.href='item.html?id=${raffle.id}'" onkeydown="if(event.key === 'Enter') window.location.href='item.html?id=${raffle.id}'">
+<div class="relative">
                     <img class="w-full h-48 object-cover" src="${raffle.image || 'https://via.placeholder.com/640x360'}" alt="${raffle.title}">
                     <div class="absolute top-2 right-2 ${categoryColor} text-white text-xs px-2 py-1 rounded">${raffle.category}</div>
                     ${raffle.is_ended ? '<div class="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded">Ended</div>' : ''}
@@ -274,8 +273,8 @@
                                 <div class="text-gray-500">Raffle ends in:</div>
                                 <div class="countdown-timer font-medium">${getCountdownText(raffle.end_time)}</div>
                             </div>
-                            <a href="item.html?id=${raffle.id}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View Details</a>
-                        </div>
+                            <a href="item.html?id=${raffle.id}" class="text-blue-600 hover:text-blue-800 text-sm font-medium" onclick="event.stopPropagation()">View Details</a>
+</div>
                     </div>
                 </div>
             </div>
@@ -346,6 +345,24 @@
                 });
             });
         }
+        // Dropdown toggle functionality
+        function setupDropdown() {
+            const dropdownBtn = document.querySelector('.dropdown button');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+
+            if (!dropdownBtn || !dropdownMenu) return;
+
+            dropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = dropdownMenu.style.display === 'block';
+                dropdownMenu.style.display = isOpen ? 'none' : 'block';
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', () => {
+                dropdownMenu.style.display = 'none';
+            });
+        }
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function () {
@@ -355,10 +372,13 @@
             // Setup category filters
             setupCategoryFilters();
 
+            // Setup dropdown
+            setupDropdown();
+
             // Load all raffles initially
             loadRaffles();
         });
-    </script>
+</script>
 </body>
 
 </html>

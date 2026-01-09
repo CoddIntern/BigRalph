@@ -48,7 +48,7 @@ class RaffleOut(RaffleBase):
 
 class TicketPurchaseRequest(BaseModel):
     """Request schema for purchasing tickets."""
-    quantity: int = Field(..., ge=1, le=10, description="Number of tickets to purchase (1-10)")
+    quantity: int = Field(..., ge=1, description="Number of tickets to purchase (must be >= 1)")
 
 
 class TicketPurchaseResponse(BaseModel):
