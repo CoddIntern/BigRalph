@@ -9,6 +9,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from dotenv import load_dotenv
+
+# Load environment variables from backend/.env
+# This ensures they are loaded even if the app is run from a different CWD
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(os.path.join(BASE_DIR, ".env"))
 
 from .database import Base, engine
 from .routers import raffles, comments, tickets, auth, wallet

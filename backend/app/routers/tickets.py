@@ -1,6 +1,6 @@
 """
 Tickets router for purchasing raffle tickets.
-Handles race-condition safe atomic ticket purchases with wallet integration.
+Handles race-condition safe atomic ticket purchases with transaction ledger.
 """
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -8,7 +8,7 @@ from sqlalchemy import text
 from datetime import datetime
 
 from ..dependencies import get_db, get_current_user
-from ..models import Raffle, User, Wallet, WalletTransaction
+from ..models import Raffle, User, Transaction
 from ..schemas import TicketPurchaseRequest, TicketPurchaseResponse, RaffleOut
 
 router = APIRouter(tags=["Tickets"])
@@ -43,14 +43,14 @@ def purchase_tickets(
     db: Session = Depends(get_db)
 ):
     """
-    Purchase tickets for a raffle using wallet balance.
+    Purchase tickets for a raffle using account balance.
     
     - Requires authentication
     - Validates raffle exists and is active
     - Enforces max 10 tickets per purchase (via Pydantic)
-    - Deducts cost from wallet atomically
+    - Deducts cost from balance atomically
     - Uses atomic UPDATE to prevent race conditions and overselling
-    - Returns updated raffle stats and wallet balance after purchase
+    - Returns updated raffle stats and balance after purchase
     """
     print(f"🚨 BUY ENDPOINT HIT: Raffle={raffle_id}, Qty={request.quantity}, User={user.email if user else 'None'}")
     
@@ -83,46 +83,39 @@ def purchase_tickets(
             detail=f"Only {available_tickets} tickets remaining"
         )
     
-    # Calculate total cost in kobo (ticket_price is in Naira, convert to kobo)
-    # Note: If ticket_price is already in kobo, remove * 100
-    total_cost_kobo = raffle.ticket_price * request.quantity * 100
+    # Calculate total cost in Naira (all values are in Naira)
+    total_cost = raffle.ticket_price * request.quantity
     
-    # Get user's wallet
-    wallet = db.query(Wallet).filter(Wallet.user_id == user.id).first()
-    if not wallet:
-        print("❌ Wallet not found for user")
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Wallet not found"
-        )
-    
-    print(f"💰 Wallet balance: {wallet.balance}, Required: {total_cost_kobo}")
+    print(f"💰 User balance: ₦{user.balance:,}, Required: ₦{total_cost:,}")
 
-    # Check wallet balance
-    if wallet.balance < total_cost_kobo:
+    # Check balance
+    if user.balance < total_cost:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Insufficient wallet balance. Required: ₦{total_cost_kobo / 100:,.2f}, Available: ₦{wallet.balance / 100:,.2f}"
+            detail=f"Insufficient balance. Required: ₦{total_cost:,}, Available: ₦{user.balance:,}"
         )
     
     # === Begin atomic transaction ===
     try:
-        # 1. Deduct from wallet atomically
-        wallet_result = db.execute(
+        # Calculate new balance
+        new_balance = user.balance - total_cost
+        
+        # 1. Deduct from user balance atomically
+        balance_result = db.execute(
             text("""
-                UPDATE wallets 
+                UPDATE users 
                 SET balance = balance - :amount,
                     updated_at = :now
-                WHERE id = :wallet_id 
+                WHERE id = :user_id 
                 AND balance >= :amount
             """),
-            {"amount": total_cost_kobo, "wallet_id": wallet.id, "now": datetime.utcnow()}
+            {"amount": total_cost, "user_id": user.id, "now": datetime.utcnow()}
         )
         
-        if wallet_result.rowcount == 0:
+        if balance_result.rowcount == 0:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Insufficient wallet balance (concurrent transaction)"
+                detail="Insufficient balance (concurrent transaction)"
             )
         
         # 2. Update raffle tickets atomically
@@ -142,25 +135,15 @@ def purchase_tickets(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Could not complete purchase - tickets may have been sold to another buyer"
             )
-            
-        # 3. Update user balance (sync with wallet) atomically
-        db.execute(
-            text("""
-                UPDATE users 
-                SET balance = balance - :amount,
-                    updated_at = :now
-                WHERE id = :user_id
-            """),
-            {"amount": total_cost_kobo, "user_id": user.id, "now": datetime.utcnow()}
-        )
         
-        # 4. Create wallet transaction record
-        transaction = WalletTransaction(
-            wallet_id=wallet.id,
-            amount=-total_cost_kobo,  # Negative for debit
+        # 3. Create transaction record
+        transaction = Transaction(
+            user_id=user.id,
+            amount=-total_cost,  # Negative for debit (in Naira)
             type="debit",
-            reference=raffle_id,
-            description=f"Purchased {request.quantity} ticket(s) for {raffle.title}"
+            description=f"Purchased {request.quantity} ticket(s) for {raffle.title}",
+            balance_after=new_balance,
+            reference=raffle_id
         )
         db.add(transaction)
         
@@ -172,6 +155,7 @@ def purchase_tickets(
         raise
     except Exception as e:
         db.rollback()
+        print(f"❌ Transaction error: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Transaction failed. Please try again."
@@ -179,12 +163,12 @@ def purchase_tickets(
     
     # Refresh models to get updated values
     db.refresh(raffle)
-    db.refresh(wallet)
+    db.refresh(user)
     
     return TicketPurchaseResponse(
         message=f"Successfully purchased {request.quantity} ticket(s)",
         tickets_purchased=request.quantity,
-        total_cost=raffle.ticket_price * request.quantity,  # Return in Naira
-        wallet_balance=wallet.balance,  # Return remaining balance in kobo
+        total_cost=total_cost,  # In Naira
+        balance=user.balance,  # Remaining balance in Naira
         raffle=raffle_to_response(raffle)
     )

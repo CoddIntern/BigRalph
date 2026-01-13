@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..dependencies import get_db, get_current_user
-from ..models import User, Wallet
+from ..models import User
 from ..schemas import UserRegister, UserLogin, UserOut, TokenResponse
 from ..auth import hash_password, verify_password, create_access_token
 
@@ -18,7 +18,7 @@ def register(data: UserRegister, db: Session = Depends(get_db)):
     Register a new user account.
     
     - Creates user with hashed password
-    - Automatically creates associated wallet with 0 balance
+    - User starts with balance=0
     - Returns user data (no password)
     """
     # Check if email already exists
@@ -39,11 +39,6 @@ def register(data: UserRegister, db: Session = Depends(get_db)):
         balance=0
     )
     db.add(user)
-    db.flush()  # Get user.id before creating wallet
-    
-    # Create wallet for user
-    wallet = Wallet(user_id=user.id, balance=0)
-    db.add(wallet)
     
     db.commit()
     db.refresh(user)

@@ -73,45 +73,35 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # One-to-one relationship with wallet
-    wallet = relationship("Wallet", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    # Transactions relationship
+    transactions = relationship("Transaction", back_populates="user", cascade="all, delete-orphan")
 
 
 # =============================================================================
-# Wallet Models
+# Transaction Ledger Model (replaces Wallet + WalletTransaction)
 # =============================================================================
 
-class Wallet(Base):
+class Transaction(Base):
     """
-    Wallet model for user funds.
+    Transaction ledger model for all balance changes.
     
-    Balance is stored in kobo (1 Naira = 100 kobo) for precision.
+    Each row is an immutable ledger entry. balance_after is the authoritative
+    running balance after this transaction.
+    
+    - amount: Positive for credit, negative for debit
+    - type: "credit" or "debit"
+    - balance_after: Running balance (must be updated atomically with user.balance)
     """
-    __tablename__ = "wallets"
+    __tablename__ = "transactions"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = Column(String, ForeignKey("users.id"), unique=True, nullable=False)
-    balance = Column(Integer, default=0)  # Balance in kobo
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-    user = relationship("User", back_populates="wallet")
-    transactions = relationship("WalletTransaction", back_populates="wallet", cascade="all, delete-orphan")
-
-
-class WalletTransaction(Base):
-    """
-    Audit log for all wallet balance changes.
-    
-    Every credit/debit is recorded for transparency and debugging.
-    """
-    __tablename__ = "wallet_transactions"
-
-    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    wallet_id = Column(String, ForeignKey("wallets.id"), nullable=False)
-    amount = Column(Integer, nullable=False)  # Amount in kobo (positive for credit, negative for debit)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    amount = Column(Integer, nullable=False)  # Positive=credit, Negative=debit (in Naira)
     type = Column(String, nullable=False)  # "credit" or "debit"
-    reference = Column(String, nullable=True)  # Optional reference (e.g., raffle_id for ticket purchase)
-    description = Column(String, nullable=True)  # Human-readable description
+    description = Column(String, nullable=True)
+    balance_after = Column(Integer, nullable=False)  # Running balance after this transaction (in Naira)
+    reference = Column(String, nullable=True)  # Payment provider reference or raffle_id
     created_at = Column(DateTime, default=datetime.utcnow)
 
-    wallet = relationship("Wallet", back_populates="transactions")
+    user = relationship("User", back_populates="transactions")
+

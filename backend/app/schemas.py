@@ -56,7 +56,7 @@ class TicketPurchaseResponse(BaseModel):
     message: str
     tickets_purchased: int
     total_cost: int
-    wallet_balance: int  # Remaining balance after purchase
+    balance: int  # Remaining balance after purchase (in Naira)
     raffle: RaffleOut
 
 
@@ -124,39 +124,63 @@ class TokenResponse(BaseModel):
 
 
 # =============================================================================
-# Wallet Schemas
+# Transaction Schemas (replaces Wallet schemas)
 # =============================================================================
 
-class WalletOut(BaseModel):
-    """Response schema for wallet data."""
+class TransactionOut(BaseModel):
+    """Response schema for transaction data."""
     id: str
-    balance: int  # Balance in kobo
-    balance_naira: float  # Convenience field: balance in Naira
-    updated_at: datetime
-
-    class Config:
-        from_attributes = True
-
-    @field_validator('balance_naira', mode='before')
-    @classmethod
-    def compute_naira(cls, v, info):
-        """Convert kobo to naira."""
-        return v if v is not None else 0.0
-
-
-class WalletFundRequest(BaseModel):
-    """Request schema for funding wallet."""
-    amount: int = Field(..., gt=0, description="Amount to add in kobo (100 kobo = 1 Naira)")
-
-
-class WalletTransactionOut(BaseModel):
-    """Response schema for wallet transaction."""
-    id: str
-    amount: int
-    type: str
-    reference: Optional[str]
+    amount: int  # In Naira (positive=credit, negative=debit)
+    type: str  # "credit" or "debit"
     description: Optional[str]
+    balance_after: int  # Running balance after this transaction
+    reference: Optional[str]
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+
+class FundRequest(BaseModel):
+    """Request schema for funding account."""
+    amount: int = Field(..., gt=0, description="Amount to add in Naira")
+
+
+class BalanceOut(BaseModel):
+    """Response schema for balance data."""
+    balance: int  # Balance in Naira
+    balance_naira: float  # Convenience field: balance in Naira
+
+
+# =============================================================================
+# Payment Schemas
+# =============================================================================
+
+class PaymentInitRequest(BaseModel):
+    """Request schema for initializing a payment."""
+    amount: int = Field(..., gt=0, description="Amount to fund in Naira")
+    provider: str = Field(..., description="Payment provider: paystack, flutterwave, or xoropay")
+    callback_url: Optional[str] = Field(None, description="URL to redirect after payment")
+
+
+class PaymentInitResponse(BaseModel):
+    """Response after initializing a payment."""
+    success: bool
+    reference: str
+    authorization_url: Optional[str] = None
+    message: str
+
+
+class PaymentVerifyRequest(BaseModel):
+    """Request schema for verifying a payment."""
+    reference: str = Field(..., description="Transaction reference to verify")
+    provider: str = Field(..., description="Payment provider used for the transaction")
+
+
+class PaymentVerifyResponse(BaseModel):
+    """Response after verifying a payment."""
+    success: bool
+    reference: str
+    amount: int  # Amount in Naira
+    balance: Optional[int] = None  # New balance after crediting (if successful)
+    message: str
