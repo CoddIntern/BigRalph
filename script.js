@@ -21,7 +21,7 @@ class Auth {
         }
 
         try {
-            const response = await fetch('/api/v1/auth/verify', {
+            const response = await fetch('/api/v1/auth/me', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -47,7 +47,7 @@ async function updateNavbar() {
     const authLinks = document.querySelectorAll('.auth-links');
     const userLinks = document.querySelectorAll('.user-links');
 
-    // Clear inline styles first to ensure classes take effect
+    // Clear inline styles first
     authLinks.forEach(link => link.style.display = '');
     userLinks.forEach(link => link.style.display = '');
 
@@ -56,7 +56,6 @@ async function updateNavbar() {
         userLinks.forEach(link => link.classList.remove('auth-hidden'));
 
         try {
-            // Fetch user profile
             const userResponse = await fetch('/api/v1/auth/me', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -64,7 +63,7 @@ async function updateNavbar() {
             if (userResponse.ok) {
                 const userData = await userResponse.json();
 
-                // Update Name: First Name + Last Initial
+                // Update Name
                 const nameEl = document.getElementById('header-user-name');
                 if (nameEl) {
                     const first = userData.first_name || 'User';
@@ -79,31 +78,20 @@ async function updateNavbar() {
                     avatarEl.src = userData.picture || `https://ui-avatars.com/api/?name=${userData.first_name}+${userData.last_name}&background=random`;
                 }
 
-                // Update Balance from User Data (if available) or fetch wallet
-                // Requirement 7: Display balance from users.balance
-                let balance = userData.balance;
-
-                // Fallback or double check with wallet endpoint if needed? 
-                // Requirement says "Display balance from users.balance" so we trust userData.balance for header.
-                // However, we still might need wallet endpoint for the Wallet page specific logic if separate.
-
+                // Update Balance
+                const balance = userData.balance;
                 const formattedBalance = formatCurrency(balance);
 
-                // Update header balance (index/item pages)
                 const headerBalEl = document.getElementById('header-user-balance');
                 if (headerBalEl) headerBalEl.textContent = formattedBalance;
 
-                // Sync Wallet Page Balance if on wallet page
                 const walletNavBal = document.getElementById('wallet-balance-nav');
                 if (walletNavBal) walletNavBal.textContent = formattedBalance;
 
             } else if (userResponse.status === 401) {
-                // Token expired or invalid
                 Auth.logout();
                 return;
             }
-            // Removed separate wallet fetch for header as per requirement to use user profile data
-
         } catch (error) {
             console.error('Error updating navbar:', error);
         }
@@ -114,24 +102,51 @@ async function updateNavbar() {
     }
 }
 
-// Initialize auth checks on page load
+// Dropdown toggle functionality
+function setupDropdown() {
+    const dropdownBtn = document.querySelector('.dropdown > button');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+    if (!dropdownBtn || !dropdownMenu) return;
+
+    // Use a clearer state management
+    dropdownBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.remove('show');
+        }
+    });
+}
+
+// Initialize on page load
 document.addEventListener('DOMContentLoaded', function () {
-    // Check auth for protected pages
     if (window.location.pathname.endsWith('wallet.html')) {
         Auth.checkAuth();
     }
 
-    // Update navbar based on auth status
     updateNavbar();
+    setupDropdown();
 
-    // Attach logout handlers
     document.querySelectorAll('.logout-btn').forEach(btn => {
         btn.addEventListener('click', Auth.logout);
     });
+
+    if (window.feather) {
+        feather.replace();
+    }
 });
 
 // Shared API helper function
 async function apiRequest(url, method = 'GET', data = null) {
+    const API_BASE = '/api/v1';
+    const fullUrl = url.startsWith('/') ? url : `${API_BASE}/${url}`;
+
     const options = {
         method,
         headers: {
@@ -139,9 +154,7 @@ async function apiRequest(url, method = 'GET', data = null) {
         }
     };
 
-    if (data) {
-        options.body = JSON.stringify(data);
-    }
+    if (data) options.body = JSON.stringify(data);
 
     const token = localStorage.getItem('access_token');
     if (token) {
@@ -149,11 +162,18 @@ async function apiRequest(url, method = 'GET', data = null) {
     }
 
     try {
-        const response = await fetch(url, options);
+        const response = await fetch(fullUrl, options);
+
+        // Handle token expiration
+        if (response.status === 401) {
+            Auth.logout();
+            throw new Error('Session expired. Please log in again.');
+        }
+
         const responseData = await response.json();
 
         if (!response.ok) {
-            throw new Error(responseData.message || 'Request failed');
+            throw new Error(responseData.detail || responseData.message || 'Request failed');
         }
 
         return responseData;
@@ -163,14 +183,8 @@ async function apiRequest(url, method = 'GET', data = null) {
     }
 }
 
+
 // Format currency helper
 function formatCurrency(amount) {
-    return '₦' + amount.toLocaleString();
+    return '₦' + (amount || 0).toLocaleString();
 }
-
-// Initialize feather icons
-document.addEventListener('DOMContentLoaded', function () {
-    if (window.feather) {
-        feather.replace();
-    }
-});

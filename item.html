@@ -35,14 +35,13 @@
                             class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">About</a>
                     </div>
                 </div>
-                <div class="user-links hidden sm:ml-6 sm:flex sm:items-center">
+                <div class="user-links auth-hidden sm:ml-6 sm:flex sm:items-center">
                     <div class="dropdown relative">
                         <button class="flex items-center space-x-2">
-                            <img id="header-user-avatar" class="h-8 w-8 rounded-full"
-                                src="http://static.photos/people/200x200/42" alt="Profile">
-                            <span id="header-user-name" class="font-medium">Oluwaseyi D.</span>
+                            <img id="header-user-avatar" class="h-8 w-8 rounded-full" src="" alt="Profile">
+                            <span id="header-user-name" class="font-medium"></span>
                             <span id="header-user-balance"
-                                class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">₦25,000</span>
+                                class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded"></span>
                         </button>
                         <div class="dropdown-menu mt-2 py-2 bg-white rounded-md shadow-lg">
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
@@ -59,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="auth-links hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                <div class="auth-links sm:ml-6 sm:flex sm:items-center space-x-4">
                     <a href="login.html" class="text-gray-500 hover:text-gray-900 text-sm font-medium">Log in</a>
                     <a href="register.html"
                         class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Register</a>
@@ -134,8 +133,12 @@
                         </div>
 
                         <div class="mt-6">
-                            <h3 class="text-lg font-semibold">Raffle Ends In</h3>
-                            <div id="countdown-timer" class="countdown-timer text-2xl font-bold mt-2"></div>
+                            <div class="flex justify-between items-end">
+                                <h3 class="text-lg font-semibold">Raffle Ends In</h3>
+                                <span id="raffle-end-date" class="text-sm text-gray-500 mb-1"></span>
+                            </div>
+                            <div id="countdown-timer" class="countdown-timer text-2xl font-bold mt-2 text-blue-600">
+                            </div>
                         </div>
 
                         <div class="mt-6">
@@ -299,6 +302,51 @@
             setTimeout(() => toast.remove(), 4000);
         }
 
+        let countdownInterval;
+
+        function startCountdown(endTime) {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            const timerEl = document.getElementById('countdown-timer');
+            const endTextEl = document.getElementById('raffle-end-date');
+
+            if (!endTime) {
+                if (timerEl) timerEl.textContent = 'End time not set';
+                return;
+            }
+
+            const endDate = new Date(endTime);
+            if (endTextEl) {
+                endTextEl.textContent = endDate.toLocaleString('en-NG', {
+                    dateStyle: 'medium',
+                    timeStyle: 'short'
+                });
+            }
+
+            function update() {
+                const now = new Date().getTime();
+                const distance = endDate.getTime() - now;
+
+                if (distance < 0) {
+                    if (timerEl) timerEl.textContent = 'RAFFLE ENDED';
+                    clearInterval(countdownInterval);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                if (timerEl) {
+                    timerEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                }
+            }
+
+            update();
+            countdownInterval = setInterval(update, 1000);
+        }
+
         // ================================
         // UI POPULATION
         // ================================
@@ -317,6 +365,7 @@
             document.getElementById('raffle-image').src = raffle.image;
             document.getElementById('raffle-ticket-price').textContent = formatCurrency(raffle.ticket_price);
             document.getElementById('raffle-ticket-price-main').textContent = formatCurrency(raffle.ticket_price);
+            document.getElementById('raffle-value').textContent = formatCurrency(raffle.item_value || 0);
             document.getElementById('available-tickets').textContent = `${availableTickets.toLocaleString()} left`;
 
             document.getElementById('ticket-count').textContent =
@@ -327,8 +376,12 @@
 
             document.getElementById('raffle-description').textContent = raffle.description || '';
 
+            // Start countdown
+            startCountdown(raffle.end_time);
+
             updateTotalPrice();
         }
+
 
         // ================================
         // PRICE CALCULATION
@@ -384,11 +437,15 @@
             buyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...';
 
             try {
+                const token = localStorage.getItem('access_token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
                 const res = await fetch(
                     `${API_BASE}/raffles/${currentRaffle.id}/tickets`,
                     {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: headers,
                         body: JSON.stringify({ quantity })
                     }
                 );
@@ -398,6 +455,9 @@
 
                 showToast(`Successfully purchased ${quantity} ticket(s)`);
                 populateRaffleUI(data.raffle);
+
+                // Refresh balance immediately everywhere
+                if (window.updateNavbar) updateNavbar();
 
             } catch (err) {
                 console.error(err);
@@ -423,6 +483,44 @@
             document.getElementById('raffle-content').classList.remove('hidden');
 
             populateRaffleUI(raffle);
+
+            // Load comments after raffle details
+            loadComments(raffleId);
+        }
+
+        async function loadComments(raffleId) {
+            const container = document.getElementById('comments-container');
+
+            try {
+                const res = await fetch(`${API_BASE}/raffles/${raffleId}/comments`);
+
+                if (!res.ok) {
+                    container.innerHTML = '<p class="text-gray-500 text-center">Failed to load comments.</p>';
+                    return;
+                }
+
+                const comments = await res.json();
+
+                if (comments.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center">No comments yet. Be the first to comment!</p>';
+                    return;
+                }
+
+                container.innerHTML = comments.map(comment => `
+                    <div class="comment-box bg-gray-50 p-4 rounded-lg ${comment.is_admin ? 'border-l-4 border-blue-500' : ''}">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-medium ${comment.is_admin ? 'text-blue-600' : ''}">${comment.author}</span>
+                            ${comment.is_admin ? '<span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded">Admin</span>' : ''}
+                            <span class="text-gray-400 text-sm">${new Date(comment.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <p class="mt-2 text-gray-700">${comment.message}</p>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                container.innerHTML = '<p class="text-red-500 text-center">Error loading comments.</p>';
+            }
         }
 
         // ================================

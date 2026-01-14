@@ -39,7 +39,7 @@
                                     data-feather="credit-card" class="w-4 h-4 mr-2"></i> Wallet</a>
                             <div class="border-t border-gray-100"></div>
                             <a href="#" id="logout-btn"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
+                                class="logout-btn block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i
                                     data-feather="log-out" class="w-4 h-4 mr-2"></i> Sign out</a>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                 <a href="wallet.html"
                     class="text-gray-500 hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">Wallet</a>
                 <a href="#" id="mobile-logout-btn"
-                    class="text-gray-500 hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">Sign
+                    class="logout-btn text-gray-500 hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">Sign
                     out</a>
             </div>
         </div>
@@ -165,28 +165,20 @@
 
     <script src="script.js"></script>
     <script>
-        // Check authentication
+        // Check authentication and process verification if reference exists
         document.addEventListener('DOMContentLoaded', async function () {
-            const token = localStorage.getItem('access_token');
-            if (!token) {
-                window.location.href = 'login.html';
-                return;
+            // Check for payment reference in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const reference = urlParams.get('reference');
+            if (reference) {
+                await verifyPayment(reference);
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
 
             // Mobile menu toggle
             document.querySelector('.mobile-menu-button').addEventListener('click', function () {
                 document.querySelector('.mobile-menu').classList.toggle('hidden');
-            });
-
-            // Logout buttons
-            document.getElementById('logout-btn').addEventListener('click', function () {
-                localStorage.removeItem('access_token');
-                window.location.href = 'index.html';
-            });
-
-            document.getElementById('mobile-logout-btn').addEventListener('click', function () {
-                localStorage.removeItem('access_token');
-                window.location.href = 'index.html';
             });
 
             // Fund modal controls
@@ -201,104 +193,122 @@
 
             // Fund wallet form submission
             document.getElementById('confirm-fund').addEventListener('click', async function () {
-                const amount = parseFloat(document.getElementById('fund-amount').value);
+                const amountInput = document.getElementById('fund-amount');
+                const amount = parseInt(amountInput.value);
                 const errorDiv = document.getElementById('fund-error');
+                const confirmBtn = document.getElementById('confirm-fund');
 
-                if (isNaN(amount) || amount <= 0) {
-                    errorDiv.textContent = 'Please enter a valid amount greater than 0';
+                if (isNaN(amount) || amount < 100) {
+                    errorDiv.textContent = 'Please enter a valid amount (minimum ₦100)';
                     errorDiv.classList.remove('hidden');
                     return;
                 }
 
                 try {
-                    const response = await fetch('/api/v1/wallet/fund', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({ amount })
+                    confirmBtn.disabled = true;
+                    confirmBtn.textContent = 'Processing...';
+
+                    const data = await apiRequest('wallet/fund/initialize', 'POST', {
+                        amount: amount,
+                        provider: 'paystack',
+                        callback_url: window.location.href
                     });
 
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(data.message || 'Failed to fund wallet');
+                    if (data.success && data.authorization_url) {
+                        window.location.href = data.authorization_url;
+                    } else {
+                        throw new Error(data.message || 'Failed to initialize payment');
                     }
-
-                    // Update balance and close modal
-                    await loadWallet();
-                    document.getElementById('fund-modal').classList.add('hidden');
-                    document.getElementById('fund-amount').value = '';
 
                 } catch (error) {
                     errorDiv.textContent = error.message;
                     errorDiv.classList.remove('hidden');
+                    confirmBtn.disabled = false;
+                    confirmBtn.textContent = 'Fund Wallet';
                 }
             });
 
-            // Load wallet data
-            await loadWallet();
+            // Initial load
+            await loadWalletData();
 
-            feather.replace();
+            if (window.feather) {
+                feather.replace();
+            }
         });
 
-        // Format currency in Naira
-        function formatCurrency(amount) {
-            return '₦' + amount.toLocaleString();
-        }
 
-        // Load wallet data
-        async function loadWallet() {
-            const token = localStorage.getItem('access_token');
-            if (!token) return;
 
+        async function verifyPayment(reference) {
             try {
-                // Get wallet balance
-                const walletResponse = await fetch('/api/v1/wallet', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                const data = await apiRequest('wallet/fund/verify', 'POST', {
+                    reference: reference,
+                    provider: 'paystack'
                 });
 
-                if (!walletResponse.ok) {
-                    throw new Error('Failed to load wallet');
+                if (data.success) {
+                    // Update global balance
+                    if (window.updateNavbar) updateNavbar();
                 }
+            } catch (error) {
+                console.error('Payment verification failed:', error);
+            }
+        }
 
-                const walletData = await walletResponse.json();
+        async function loadWalletData() {
+            try {
+                // Get balance & transactions in parallel
+                const [balanceData, transactions] = await Promise.all([
+                    apiRequest('wallet'),
+                    apiRequest('wallet/transactions')
+                ]);
 
                 // Update balance display
-                document.getElementById('current-balance').textContent = formatCurrency(walletData.balance);
-                document.getElementById('wallet-balance-nav').textContent = formatCurrency(walletData.balance);
+                const balEl = document.getElementById('current-balance');
+                if (balEl) balEl.textContent = formatCurrency(balanceData.balance);
 
-                // Load transactions (mock for now)
-                const transactionsDiv = document.getElementById('transactions');
-                transactionsDiv.innerHTML = `
-                    <div class="border-b border-gray-200 pb-4">
-                        <div class="flex justify-between">
-                            <p class="text-sm font-medium text-gray-900">Wallet Funding</p>
-                            <p class="text-sm text-gray-500">Today</p>
-                        </div>
-                        <p class="text-sm text-gray-500 mt-1">Deposit via bank transfer</p>
-                        <p class="text-sm font-medium text-green-600 mt-1">+₦10,000.00</p>
-                    </div>
-                    <div class="border-b border-gray-200 pb-4">
-                        <div class="flex justify-between">
-                            <p class="text-sm font-medium text-gray-900">Ticket Purchase</p>
-                            <p class="text-sm text-gray-500">2 days ago</p>
-                        </div>
-                        <p class="text-sm text-gray-500 mt-1">iPhone 14 Pro raffle</p>
-                        <p class="text-sm font-medium text-red-600 mt-1">-₦2,500.00</p>
-                    </div>
-                `;
+                // Update transactions list
+                renderTransactions(transactions);
 
             } catch (error) {
-                console.error('Error loading wallet:', error);
-                if (error.message === 'Unauthorized') {
-                    localStorage.removeItem('access_token');
-                    window.location.href = 'login.html';
-                }
+                console.error('Error loading wallet data:', error);
             }
+        }
+
+        function renderTransactions(transactions) {
+            const container = document.getElementById('transactions');
+            if (!container) return;
+
+            if (!transactions || transactions.length === 0) {
+                container.innerHTML = '<p class="text-center text-gray-500 py-8">No transactions yet</p>';
+                return;
+            }
+
+            container.innerHTML = transactions.map(tx => {
+                const isCredit = tx.type === 'credit';
+                const textColor = isCredit ? 'text-green-600' : 'text-red-600';
+                const sign = isCredit ? '+' : '-';
+                const date = new Date(tx.created_at).toLocaleDateString('en-NG', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                return `
+                    <div class="border-b border-gray-100 py-4 last:border-0">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-grow">
+                                <p class="text-sm font-semibold text-gray-900">${tx.description || 'Transaction'}</p>
+                                <p class="text-xs text-gray-500 mt-1">${date}</p>
+                                ${tx.reference ? `<p class="text-xs text-gray-400 mt-1 font-mono">Ref: ${tx.reference}</p>` : ''}
+                            </div>
+                            <div class="text-right ml-4">
+                                <p class="text-sm font-bold ${textColor}">${sign}${formatCurrency(tx.amount).replace('₦', '₦ ')}</p>
+                                <p class="text-xs text-gray-400 mt-1">Bal: ${formatCurrency(tx.balance_after)}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
     </script>
 </body>
