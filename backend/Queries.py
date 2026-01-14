@@ -126,11 +126,11 @@ if __name__ == "__main__":
     
     # Example custom query - uncomment to use
     print("\n🔍 Custom Query:")
-    # custom_query("SELECT * FROM transactions WHERE true ")
+    custom_query("SELECT * FROM transactions WHERE true ")
     ## custom_query("delete from transactions where id = 'efc922e8-d33e-40f0-ae6d-d3c7c6fcb89a';")
 
     # custom_query("UPDATE users SET balance = 5000 where email = 'oluwagbamzod@gmail.com';")
-    custom_query("SELECT * FROM users WHERE true ")
+    # custom_query("SELECT * FROM users WHERE true ")
 
     conn.close()
     print("\n✅ Done!")
