@@ -18,6 +18,8 @@ class Raffle(Base):
     __tablename__ = "raffles"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    uuid = Column(String, unique=True, index=True, default=lambda: str(uuid.uuid4()))
+    serial_number = Column(Integer, unique=True, index=True, autoincrement=True)
     title = Column(String, nullable=False)
     description = Column(Text, nullable=True)  # Detailed description of the prize
     category = Column(String, nullable=False)  # Cars, Electronics, Gadgets, Land, Fashion
@@ -41,6 +43,7 @@ class Comment(Base):
     __tablename__ = "comments"
 
     id = Column(Integer, primary_key=True, index=True)
+    serial_number = Column(Integer, unique=True, index=True, autoincrement=True)
     raffle_id = Column(String, ForeignKey("raffles.id"), nullable=False)
     author = Column(String, nullable=False)
     message = Column(Text, nullable=False)
@@ -63,6 +66,7 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    serial_number = Column(Integer, unique=True, index=True, autoincrement=True)
     email = Column(String, unique=True, index=True, nullable=False)
     first_name = Column(String, nullable=False, default="User")
     last_name = Column(String, nullable=False, default="Name")
@@ -95,12 +99,13 @@ class Transaction(Base):
     __tablename__ = "transactions"
 
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    serial_number = Column(Integer, unique=True, index=True, autoincrement=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False, index=True)
     amount = Column(Integer, nullable=False)  # Positive=credit, Negative=debit (in Naira)
     type = Column(String, nullable=False)  # "credit" or "debit"
     description = Column(String, nullable=True)
     balance_after = Column(Integer, nullable=False)  # Running balance after this transaction (in Naira)
-    reference = Column(String, nullable=True)  # Payment provider reference or raffle_id
+    reference = Column(String, nullable=True, index=True)  # Payment provider reference or raffle_uuid
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", back_populates="transactions")

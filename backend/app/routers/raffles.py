@@ -25,6 +25,8 @@ def raffle_to_response(raffle: Raffle) -> RaffleOut:
     
     return RaffleOut(
         id=raffle.id,
+        uuid=raffle.uuid,
+        serial_number=raffle.serial_number,
         title=raffle.title,
         description=raffle.description,
         category=raffle.category,
