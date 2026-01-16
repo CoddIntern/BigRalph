@@ -27,6 +27,8 @@ class RaffleOut(RaffleBase):
     Includes computed fields for progress and ended status.
     """
     id: str
+    uuid: str
+    serial_number: int
     tickets_sold: int
     end_time: datetime
     is_ended: bool
@@ -74,6 +76,7 @@ class CommentCreate(BaseModel):
 class CommentOut(BaseModel):
     """Response schema for comment data."""
     id: int
+    serial_number: int
     author: str
     message: str
     is_admin: bool
@@ -104,6 +107,7 @@ class UserLogin(BaseModel):
 class UserOut(BaseModel):
     """Response schema for user data (no password)."""
     id: str
+    serial_number: int
     email: str
     first_name: str
     last_name: str
@@ -130,6 +134,7 @@ class TokenResponse(BaseModel):
 class TransactionOut(BaseModel):
     """Response schema for transaction data."""
     id: str
+    serial_number: int
     amount: int  # In Naira (positive=credit, negative=debit)
     type: str  # "credit" or "debit"
     description: Optional[str]

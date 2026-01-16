@@ -6,6 +6,7 @@ Run this script to query the SQLite database interactively.
 import sqlite3
 import os
 from datetime import datetime
+# import pandas as pd
 
 # Get the directory where this script is located
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -127,7 +128,7 @@ if __name__ == "__main__":
     # Example custom query - uncomment to use
     print("\n🔍 Custom Query:")
     custom_query("SELECT * FROM transactions WHERE true ")
-    ## custom_query("delete from transactions where id = 'efc922e8-d33e-40f0-ae6d-d3c7c6fcb89a';")
+    ## custom_query("delete from transactions where id = 'efc922e8-d33e-40f0-ae6d-d3c7c6fcb89a' where false;")
 
     # custom_query("UPDATE users SET balance = 5000 where email = 'oluwagbamzod@gmail.com';")
     # custom_query("SELECT * FROM users WHERE true ")

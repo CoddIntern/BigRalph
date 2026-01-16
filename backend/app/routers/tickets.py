@@ -21,6 +21,8 @@ def raffle_to_response(raffle: Raffle) -> RaffleOut:
     
     return RaffleOut(
         id=raffle.id,
+        uuid=raffle.uuid,
+        serial_number=raffle.serial_number,
         title=raffle.title,
         description=raffle.description,
         category=raffle.category,
@@ -143,7 +145,7 @@ def purchase_tickets(
             type="debit",
             description=f"Purchased {request.quantity} ticket(s) for {raffle.title}",
             balance_after=new_balance,
-            reference=raffle_id
+            reference=raffle.uuid
         )
         db.add(transaction)
         

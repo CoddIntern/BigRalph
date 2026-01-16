@@ -130,6 +130,10 @@ Color: Midnight Black Metallic""",
 
         db.add_all(raffles)
         db.commit()
+        
+        # Refresh to get access to generated UUIDs if needed for relationships
+        for raffle in raffles:
+            db.refresh(raffle)
 
         comments = [
             Comment(
