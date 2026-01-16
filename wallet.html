@@ -302,7 +302,7 @@
                                 ${tx.reference ? `<p class="text-xs text-gray-400 mt-1 font-mono">Ref: ${tx.reference}</p>` : ''}
                             </div>
                             <div class="text-right ml-4">
-                                <p class="text-sm font-bold ${textColor}">${sign}${formatCurrency(tx.amount).replace('₦', '₦ ')}</p>
+                                <p class="text-sm font-bold ${textColor}">${sign}${formatCurrency(Math.abs(tx.amount)).replace('₦', '₦')}</p>
                                 <p class="text-xs text-gray-400 mt-1">Bal: ${formatCurrency(tx.balance_after)}</p>
                             </div>
                         </div>
